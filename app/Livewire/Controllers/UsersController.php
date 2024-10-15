@@ -42,7 +42,6 @@ class UsersController extends Component
         $this->roles = Role::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         //$this->roles = Role::whereNotIn('name', ['elector', 'gestor', 'lider'])->pluck('name', 'id')->toArray();
 
-
     }
     public function reload()
     {

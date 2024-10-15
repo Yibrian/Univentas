@@ -78,7 +78,7 @@
     <footer class="bg-red-700 shadow">
         <div class="w-full mx-auto max-w-screen-xl p-4 flex items-center justify-between">
             <span class="text-sm text-white hover:text-gray-300">&copy; {{ date('Y') }} <a href="#"
-                    class="hover:underline">Carlos Villamil</a> - All Rights Reserved.</span>
+                    class="hover:underline"></a> - Software CYJ. All rights reserved.</span>
             <div class="ml-auto">
                 <span class="text-xs text-white hover:text-gray-300">UNIVENTAS - Ecommerce desarrollado para la Universidad del Valle</span>
             </div>

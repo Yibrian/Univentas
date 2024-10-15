@@ -6,6 +6,9 @@
 <x-dropdown-link :href="route('users')">
     {{__('Users')}} 
 </x-dropdown-link>
+<x-dropdown-link :href="route('categorias')">
+    {{__('Gestión de Categorias')}} 
+</x-dropdown-link>
 @endrole
 
 

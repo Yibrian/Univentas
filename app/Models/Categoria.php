@@ -6,30 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\UuidTrait;
 
-class Vendedor extends Model
+class Categoria extends Model
 {
     use HasFactory;
-
     use UuidTrait;
 
-    public $table = 'vendedores';
-
     protected $fillable = [
-        'user_id',
-        'nombre_tienda',
-        'descripcion',
-        'foto_tienda',
+        'nombre',
+        'photo',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function productos(){
         return $this->hasMany(Producto::class);
 
     }
-
 
 }
