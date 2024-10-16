@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Controllers\BusquedaController;
 use App\Livewire\Controllers\CategoriaController;
 use App\Livewire\Controllers\DashboardController;
 use App\Livewire\Controllers\ProductoController;
@@ -46,6 +47,9 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['auth', 'role:admin|cliente|vendedor']], function () {
     Route::get('producto/{id}', VerProductoController::class)
     ->name('producto');
+
+    Route::get('/busqueda/{tipo}/{clave}', BusquedaController::class)->name('busqueda');
+
 });
 Route::group(['middleware' => ['auth', 'role:cliente']], function () {
 });

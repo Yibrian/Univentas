@@ -52,11 +52,27 @@
                             {{ $producto->vendedor->nombre_tienda }}</p>
                     </h4>
                     <p class="mt-2 text-gray-600">{{ $producto->vendedor->descripcion }}</p>
+                    <div class="mt-4 flex items-center">
+                        <span class="text-yellow-500 flex">
+                            @for ($i = 0; $i < 5; $i++)
+                                @if ($i <5)
+                                    <svg class="h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path d="M10 15l-5.878 3.09 1.122-6.563L1 6.545l6.568-.955L10 0l2.432 5.59L19 6.545l-4.244 4.982 1.122 6.563L10 15z"/>
+                                    </svg>
+                                @else
+                                    <svg class="h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path d="M10 15l-5.878 3.09 1.122-6.563L1 6.545l6.568-.955L10 0l2.432 5.59L19 6.545l-4.244 4.982 1.122 6.563L10 15z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    </svg>
+                                @endif
+                            @endfor
+                        </span>
+                    </div>
                 </div>
                 <div class="flex-shrink-0 ml-4">
                     <img src="{{ asset('storage/' . $producto->vendedor->foto_tienda) }}"
                         alt="{{ $producto->vendedor->nombre_tienda }}" class="max-w-24 h-auto rounded-lg shadow-md" />
                 </div>
+                
             </div>
             <div class="mt-4 text-center">
                 <a

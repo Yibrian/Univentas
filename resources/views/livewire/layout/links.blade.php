@@ -3,7 +3,7 @@
 
     $categorias = Categoria::all();
 @endphp
-<x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" >
+<x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
     <i class="fa-solid fa-house mr-2 text-sm"></i> {{ __('Dashboard') }}
 </x-nav-link>
 
@@ -18,7 +18,7 @@
 @endif
 
 <div
-    class="inline-flex items-center px-0 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+    class="inline-flex items-center px-0 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-black-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
     <x-dropdown align="left" width="48">
         <x-slot name="trigger">
             <button
@@ -33,7 +33,7 @@
         </x-slot>
         <x-slot name="content">
             @foreach ($categorias as $categoria)
-                <x-dropdown-link :href="route('dashboard')">
+                <x-dropdown-link href="{{ route('busqueda', ['tipo' => 'categoria', 'clave' => $categoria->nombre]) }}">
                     {{ $categoria->nombre }}
                 </x-dropdown-link>
             @endforeach
