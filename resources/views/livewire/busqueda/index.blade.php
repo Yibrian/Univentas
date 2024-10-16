@@ -1,6 +1,6 @@
 <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('Búsqueda '). $titulo }}
+        {{ $titulo }}
     </h2>
     <x-breadcrumbs :breadcrumbs="[['title' => 'Inicio', 'url' => route('dashboard')], ['title' => 'Buscar', 'url' => null]]" />
 </x-slot>

@@ -36,12 +36,17 @@ new class extends Component {
 
             <!-- Settings Dropdown and Search Bar -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Search Bar -->
-                <div class="mr-4">
+                <div x-data="{ palabraClave: '' }" class="mr-4">
                     <input type="text"
-                        class="rounded-md border-gray-300 focus:border-indigo-500  focus:ring-indigo-500 w-72 sm:max-w-xs"
-                        placeholder="Buscar..." wire:model="searchTerm" />
+                        x-model="palabraClave"
+                        @keydown.enter="if(palabraClave) { 
+                            window.location.href = '{{ url('/busqueda/query') }}/' + palabraClave; 
+                        }"
+                        class="rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 w-72 sm:max-w-xs"
+                        placeholder="Buscar..."
+                    />
                 </div>
+                
 
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -97,11 +102,17 @@ new class extends Component {
     <!-- Responsive Settings Options -->
     <div class="pt-4 pb-1 border-t border-gray-200">
         <!-- Search Bar -->
-        <div class="px-4 mb-4">
+        <div x-data="{ palabraClave: '' }" class="px-4 mb-4">
             <input type="text"
+                x-model="palabraClave"
+                @keydown.enter="if(palabraClave) { 
+                    window.location.href = '{{ url('/busqueda/query') }}/' + palabraClave; 
+                }"
                 class="rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 w-full"
-                placeholder="Buscar..." wire:model="searchTerm" />
+                placeholder="Buscar..."
+            />
         </div>
+        
         
         <!-- Profile Section -->
         <div class="flex items-center px-4">

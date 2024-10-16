@@ -11,10 +11,13 @@ class BusquedaController extends Component
 
     public $titulo;
 
-    public function mount($tipo, $clave){
-        if($tipo == 'categoria'){
+    public function mount($tipo, $clave)
+    {
+        if ($tipo == 'categoria') {
             $this->buscarPorCategoria($clave);
-        }else{
+        } elseif($tipo == 'query'){
+            $this->buscarPorPalabraClave($clave);
+        }else {
             abort(404);
         }
     }
@@ -24,9 +27,18 @@ class BusquedaController extends Component
             $query->where('nombre', $nombre);
         })->get();
 
-        $this->titulo = "categoria ". strtolower($nombre);
+        $this->titulo = "Categoria " . strtolower($nombre);
 
+    }
 
+    public function buscarPorPalabraClave($palabraClave)
+    {
+        $this->productos = Producto::where(function ($query) use ($palabraClave) {
+            $query->where('nombre', 'like', '%' . $palabraClave . '%')
+                ->orWhere('descripcion', 'like', '%' . $palabraClave . '%');
+        })->get();
+
+        $this->titulo = "Resultados de la búsqueda: " . strtolower($palabraClave);
     }
     public function render()
     {
