@@ -26,7 +26,7 @@ class BusquedaController extends Component
     public function buscarPorCategoria($nombre)
     {
         $this->productos = Producto::whereHas('categoria', function ($query) use ($nombre) {
-            $query->where('nombre', $nombre);
+            $query->where('nombre', $nombre)->where('disponibilidad', 1)->where('cantidad', '>', 0);
         })->get();
 
         $this->titulo = "Categoria " . strtolower($nombre);
@@ -36,8 +36,8 @@ class BusquedaController extends Component
     public function buscarPorPalabraClave($palabraClave)
     {
         $this->productos = Producto::where(function ($query) use ($palabraClave) {
-            $query->where('nombre', 'like', '%' . $palabraClave . '%')
-                ->orWhere('descripcion', 'like', '%' . $palabraClave . '%');
+            $query->where('nombre', 'like', '%' . $palabraClave . '%')->where('disponibilidad', 1)->where('cantidad', '>', 0)
+                ->orWhere('descripcion', 'like', '%' . $palabraClave . '%')->where('disponibilidad', 1)->where('cantidad', '>', 0);
         })->get();
 
         $this->titulo = "Resultados de la búsqueda: " . strtolower($palabraClave);
