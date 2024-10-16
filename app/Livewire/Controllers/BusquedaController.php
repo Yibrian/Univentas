@@ -4,6 +4,8 @@ namespace App\Livewire\Controllers;
 
 use Livewire\Component;
 use App\Models\Producto;
+use App\Models\Vendedor;
+use App\Models\Categoria;
 
 class BusquedaController extends Component
 {
@@ -11,16 +13,29 @@ class BusquedaController extends Component
 
     public $titulo;
 
+    public $vendedor;
+
+    public $categoria;
+
 
     public function mount($tipo, $clave)
     {
-        if ($tipo == 'categoria') {
-            $this->buscarPorCategoria($clave);
-        } elseif($tipo == 'query'){
-            $this->buscarPorPalabraClave($clave);
-        }else {
-            abort(404);
+        switch ($tipo) {
+            case 'categoria':
+                $this->buscarPorCategoria($clave);
+                break;
+            case 'query':
+                $this->buscarPorPalabraClave($clave);
+                break;
+            case 'tienda':
+                $this->buscarPorTienda($clave);
+                break;
+
+            default:
+                abort(code: 404);
+                break;
         }
+
 
     }
     public function buscarPorCategoria($nombre)
@@ -30,6 +45,7 @@ class BusquedaController extends Component
         })->get();
 
         $this->titulo = "Categoria " . strtolower($nombre);
+        $this->categoria = Categoria::where('nombre', $nombre)->first();
 
     }
 
@@ -41,6 +57,13 @@ class BusquedaController extends Component
         })->get();
 
         $this->titulo = "Resultados de la búsqueda: " . strtolower($palabraClave);
+    }
+
+
+    public function buscarPorTienda($id){
+        $this->vendedor = Vendedor::findOrFail($id);
+        $this->productos = $this->vendedor->productos->where('disponibilidad', 1)->where('cantidad', '>', 0);
+        $this->titulo = "Resultados de la tienda: ". strtolower($this->vendedor->nombre_tienda);
     }
     public function render()
     {
