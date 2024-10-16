@@ -7,6 +7,16 @@ new class extends Component {
     /**
      * Log the current user out of the application.
      */
+     public $palabra_busqueda;
+
+     public function mount(){
+        
+        if(request()->route('tipo') === 'query'){
+            $this->palabra_busqueda = request()->route('clave');
+        }
+
+     }
+
     public function logout(Logout $logout): void
     {
         $logout();
@@ -36,14 +46,14 @@ new class extends Component {
 
             <!-- Settings Dropdown and Search Bar -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <div x-data="{ palabraClave: '' }" class="mr-4">
+                <div x-data="{ palabraClave:  @entangle('palabra_busqueda') }" class="mr-4">
                     <input type="text"
                         x-model="palabraClave"
                         @keydown.enter="if(palabraClave) { 
                             window.location.href = '{{ url('/busqueda/query') }}/' + palabraClave; 
                         }"
                         class="rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 w-72 sm:max-w-xs"
-                        placeholder="Buscar..."
+                        placeholder="Buscar..." wire:model="palabra_busqueda"
                     />
                 </div>
                 
@@ -102,7 +112,7 @@ new class extends Component {
     <!-- Responsive Settings Options -->
     <div class="pt-4 pb-1 border-t border-gray-200">
         <!-- Search Bar -->
-        <div x-data="{ palabraClave: '' }" class="px-4 mb-4">
+        <div x-data="{ palabraClave:  @entangle('palabra_busqueda') }" class="px-4 mb-4">
             <input type="text"
                 x-model="palabraClave"
                 @keydown.enter="if(palabraClave) { 
@@ -112,6 +122,7 @@ new class extends Component {
                 placeholder="Buscar..."
             />
         </div>
+        
         
         
         <!-- Profile Section -->

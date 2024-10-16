@@ -11,6 +11,7 @@ class BusquedaController extends Component
 
     public $titulo;
 
+
     public function mount($tipo, $clave)
     {
         if ($tipo == 'categoria') {
@@ -20,6 +21,7 @@ class BusquedaController extends Component
         }else {
             abort(404);
         }
+
     }
     public function buscarPorCategoria($nombre)
     {

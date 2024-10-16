@@ -13,6 +13,8 @@ class DashboardController extends Component{
     public function mount()
     {
         $this->productos = Producto::where('disponibilidad', 1)->where('cantidad', '>', 0)->get();
+
+        
     }
     public function render()
     {
