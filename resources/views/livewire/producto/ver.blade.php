@@ -38,7 +38,7 @@
 
                     <div class="mt-6">
                         <x-primary-button>
-                            Comprar Ahora!!
+                            ¡Comprar Ahora!
                         </x-primary-button>
                     </div>
                 </div>

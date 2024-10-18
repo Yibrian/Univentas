@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ __('Compra con nosotros!') }}</h3>
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ __('¡Compra con nosotros!') }}</h3>
 
                 @if ($productos->isEmpty())
                     <p class="text-center text-gray-500">{{ __('No hay productos disponibles.') }}</p>

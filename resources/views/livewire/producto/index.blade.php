@@ -30,11 +30,10 @@
                                  class="w-full h-40 object-cover rounded-md mb-4">
                             
                             <h3 class="text-lg font-bold text-gray-700">{{ $producto->nombre }}</h3>
-                            <p class="text-gray-500 text-sm mt-2">{{ $producto->descripcion }}</p>
+                            <p class="text-gray-500 text-sm mt-2 ">{{ ucfirst(strtolower($producto->descripcion)) }}</p>
                             <p class="text-gray-500 text-sm mt-2">Precio: {{ $producto->precio }}</p>
     
                             <p class="mt-4">
-                                <span class="font-bold">{{ __('Estado:') }}</span>
                                 <span class="px-1.5 py-0.5 rounded-full text-xs text-white {{ $producto->disponibilidad ? 'bg-green-500' : 'bg-red-500' }}">
                                     {{ $producto->disponibilidad ? __('Disponible') : __('No disponible') }}
                                 </span>

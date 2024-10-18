@@ -48,7 +48,7 @@
                                         {{ __('Active') }}
                                     @else
                                         <span
-                                            style="display: inline-block; width: 10px; height: 10px; background-color: #C00000; border-radius: 50%; margin-right: 5px;"></span>
+                                            style="display: inline-block; width: 10px; height: 10px; background-color: gray; border-radius: 50%; margin-right: 5px;"></span>
                                         {{ __('Inactive') }}
                                     @endif
                                 </td>
