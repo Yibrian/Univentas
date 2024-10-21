@@ -39,9 +39,7 @@ class UsersController extends Component
     public function mount()
     {
         $this->users = User::all();
-        $this->roles = Role::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-        //$this->roles = Role::whereNotIn('name', ['elector', 'gestor', 'lider'])->pluck('name', 'id')->toArray();
-
+        $this->roles = Role::orderBy('name', 'asc')->whereNotIn('name', ['vendedor'])->pluck('name', 'id')->toArray();
     }
     public function reload()
     {
@@ -70,6 +68,7 @@ class UsersController extends Component
         $user = User::create($validated);
         $role = Role::findOrFail($this->rol);
         $user->assignRole($role);
+        $user->assignRole("cliente");
         $user->save();
 
 

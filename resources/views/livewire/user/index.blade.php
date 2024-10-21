@@ -40,8 +40,13 @@
                                 </td>
                                 <td class="py-2 px-6 text-left">{{ $user->cedula }}</td>
                                 <td class="py-2 px-6 text-left">{{ $user->email }}</td>
-                                <td class="py-2 px-6 text-left">{{strtoupper(__($user->getRoleNames()->first()))}}</td>
                                 <td class="py-2 px-6 text-left">
+                                    {{ strtoupper(
+                                        $user->getRoleNames()->first() === 'admin' ? 'Admin' : 
+                                        ($user->hasRole('vendedor') ? 'vendedor' : $user->getRoleNames()->first())
+                                    ) }}
+                                </td>
+                                                                <td class="py-2 px-6 text-left">
                                     @if ($user->is_active)
                                         <span
                                             style="display: inline-block; width: 10px; height: 10px; background-color: green; border-radius: 50%; margin-right: 5px;"></span>
