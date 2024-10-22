@@ -41,16 +41,22 @@
                 @else
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($productos as $producto)
-                            <a  href="{{ route('producto', ['id' => $producto->id]) }}" class="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 ease-in-out group cursor-pointer">
-                                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}"
-                                    class="w-full h-48 object-cover rounded-md mb-2">
-                                <h4
-                                    class="text-lg font-semibold text-gray-600 group-hover:text-red-700 transition duration-200">
-                                    {{ $producto->nombre }}</h4>
-                                <p class="text-gray-500 mt-2">{{ $producto->descripcion }}</p>
-                                <p class="text-gray-800 font-semibold mt-4">Precio:
-                                    ${{ number_format($producto->precio, 0) }}</p>
-                                <p class="text-gray-500 mt-1">Cantidad disponible: {{ $producto->cantidad }}</p>
+                            @if ($user->cliente)
+                                <a href="{{ route('producto', ['id' => $producto->id]) }}"
+                                    class="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 ease-in-out group cursor-pointer">
+                                @else
+                                    <a href="{{ route('profile') }}"
+                                        class="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 ease-in-out group cursor-pointer">
+                            @endif
+                            <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}"
+                                class="w-full h-48 object-cover rounded-md mb-2">
+                            <h4
+                                class="text-lg font-semibold text-gray-600 group-hover:text-red-700 transition duration-200">
+                                {{ $producto->nombre }}</h4>
+                            <p class="text-gray-500 mt-2">{{ $producto->descripcion }}</p>
+                            <p class="text-gray-800 font-semibold mt-4">Precio:
+                                ${{ number_format($producto->precio, 0) }}</p>
+                            <p class="text-gray-500 mt-1">Cantidad disponible: {{ $producto->cantidad }}</p>
                             </a>
                         @endforeach
                     </div>
@@ -60,6 +66,8 @@
 
         </div>
     </div>
+    @include('components.alert-component')
+
 </div>
 
 

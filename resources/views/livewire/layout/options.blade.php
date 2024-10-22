@@ -10,13 +10,19 @@
     {{__('Gestión de Categorias')}} 
 </x-dropdown-link>
 @endrole
+@role('cliente')
+    <x-dropdown-link :href="route('compras')">
+        {{__('Mis compras')}} 
+    </x-dropdown-link>
+@endrole
 
-
-@if (Auth::user()->vendedor)  
+@role('vendedor')
     <x-dropdown-link :href="route('mi.tienda')">
         {{__('Mi tienda')}} 
     </x-dropdown-link>
-@endif
+@endrole
+
+
 
 <!-- Authentication -->
 <button wire:click="logout" class="w-full text-start">

@@ -24,4 +24,10 @@ class Cliente extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function compras(){
+        return $this->hasMany(related: Venta::class);
+
+    }
+
+
 }
