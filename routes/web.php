@@ -6,6 +6,7 @@ use App\Livewire\Controllers\ComprasController;
 use App\Livewire\Controllers\DashboardController;
 use App\Livewire\Controllers\ProductoController;
 use App\Livewire\Controllers\VendedorController;
+use App\Livewire\Controllers\VentasController;
 use App\Livewire\Controllers\VerProductoController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -46,21 +47,24 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|cliente|vendedor']], function () {
-    Route::get('producto/{id}', VerProductoController::class)
-    ->name('producto');
 
     Route::get('/busqueda/{tipo}/{clave}', BusquedaController::class)->name('busqueda');
 
-    Route::get('mis-compras', ComprasController::class)
-        ->name('compras');
 });
 Route::group(['middleware' => ['auth', 'role:cliente']], function () {
+    Route::get('mis-compras', ComprasController::class)
+        ->name('compras');
+    Route::get('producto/{id}', VerProductoController::class)
+        ->name('producto');
 });
 
 
 Route::group(['middleware' => ['auth', 'role:vendedor']], function () {
     Route::get('vender', ProductoController::class)
         ->name('vender');
+
+    Route::get('mis-ventas', VentasController::class)
+        ->name('ventas');
 });
 
 

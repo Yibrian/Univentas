@@ -33,29 +33,46 @@
                             <div class="text-right space-y-2">
                                 <p class="text-lg font-bold text-gray-800">Total:
                                     ${{ number_format($compra->producto->precio * $compra->cantidad, 0) }}</p>
-                                @if (!$compra->confirmacion_vendedor)
+
+                                @if (!$compra->confirmacion_vendedor && !$compra->confirmacion_cliente)
                                     <p
                                         class="text-sm font-semibold text-blue-800 bg-blue-100 px-4 py-2 rounded-lg flex items-center space-x-2">
                                         <span>Pendiente de confirmación por el vendedor</span>
                                     </p>
+                                    <div
+                                        class="mt-3 text-sm font-semibold text-red-800 bg-red-100 px-4 py-2 rounded-lg flex items-center justify-between space-x-2">
+                                        <span>¿Deseas cancelar la compra?</span>
+                                        <a wire:click.prevent="cancelarCompra('{{ $compra->id }}')"
+                                            class="bg-red-600 text-white px-2 py-1 rounded-md hover:bg-red-700 transition-colors cursor-pointer">
+                                            Cancelar
+                                        </a>
+                                    </div>
                                 @endif
+
                                 @if ($compra->confirmacion_vendedor && !$compra->confirmacion_cliente)
                                     <div
                                         class="text-sm font-semibold text-orange-800 bg-orange-100 px-3 py-2 rounded-lg flex items-center justify-between space-x-2">
                                         <span>Venta confirmada. Por favor, confirma la recepción.</span>
-                                        <button
-                                            class="bg-orange-600 text-white px-2 py-1 rounded-md hover:bg-orange-700 transition-colors">
+                                        <a wire:click.prevent="confirmarRecepción('{{ $compra->id }}')"
+                                            class="bg-orange-600 text-white px-2 py-1 rounded-md hover:bg-orange-700 transition-colors cursor-pointer">
                                             Confirmar
-                                        </button>
+                                        </a>
                                     </div>
                                 @endif
 
-
+                                @if ($compra->confirmacion_vendedor && $compra->confirmacion_cliente)
+                                    <div
+                                        class="text-sm font-semibold text-green-800 bg-green-100 px-3 py-2 rounded-lg flex items-center space-x-2">
+                                        <span>Compra completada</span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
+
                 </div>
             @endif
         </div>
     </div>
+    @include('components.alert-component')
 </div>

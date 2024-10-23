@@ -19,11 +19,11 @@ class Venta extends Model
 
     public function vendedor()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Vendedor::class);
     }
 
     public function cliente()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Cliente::class);
     }
 }

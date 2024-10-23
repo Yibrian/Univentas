@@ -35,6 +35,6 @@ class Vendedor extends Model
         return $this->hasMany(Venta::class);
 
     }
-
+    
 
 }

@@ -3,22 +3,25 @@
 </x-dropdown-link>
 
 @role('admin')
-<x-dropdown-link :href="route('users')">
-    {{__('Users')}} 
-</x-dropdown-link>
-<x-dropdown-link :href="route('categorias')">
-    {{__('Gestión de Categorias')}} 
-</x-dropdown-link>
+    <x-dropdown-link :href="route('users')">
+        {{ __('Users') }}
+    </x-dropdown-link>
+    <x-dropdown-link :href="route('categorias')">
+        {{ __('Gestión de Categorias') }}
+    </x-dropdown-link>
 @endrole
 @role('cliente')
     <x-dropdown-link :href="route('compras')">
-        {{__('Mis compras')}} 
+        {{ __('Mis compras') }}
     </x-dropdown-link>
 @endrole
 
 @role('vendedor')
+    <x-dropdown-link :href="route('ventas')">
+        {{ __('Mis ventas') }}
+    </x-dropdown-link>
     <x-dropdown-link :href="route('mi.tienda')">
-        {{__('Mi tienda')}} 
+        {{ __('Mi tienda') }}
     </x-dropdown-link>
 @endrole
 
