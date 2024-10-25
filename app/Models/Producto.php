@@ -21,7 +21,9 @@ class Producto extends Model
         'categoria_id',
         'disponibilidad',
         'cantidad',
-        'imagen'
+        'imagen',
+        'envio_domicilio',
+        'precio_domicilio'
     ];
 
     public function vendedor()

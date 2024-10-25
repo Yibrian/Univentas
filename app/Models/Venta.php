@@ -10,7 +10,8 @@ class Venta extends Model
 {
     use HasFactory;
     use UuidTrait;
-    protected $fillable = ['producto_id', 'vendedor_id', 'cliente_id', 'confirmacion_vendedor', 'confirmacion_cliente'];
+    protected $fillable = ['producto_id', 'vendedor_id', 'cliente_id', 'confirmacion_vendedor', 'confirmacion_cliente',
+    'cantidad', 'entrega_domicilio', 'lugar_entrega', 'metodo', 'comprobante', 'valor'];
 
     public function producto()
     {

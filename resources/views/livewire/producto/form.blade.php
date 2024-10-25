@@ -44,6 +44,20 @@
         </select>
         <x-input-error :messages="$errors->get('categoria_id')" class="mt-2" />
     </div>
+    <div class="mt-2">
+        <x-input-label for="envio_domicilio" :value="__('¿Envío a domicilio?')" />
+        <select wire:model="envio_domicilio" id="envio_domicilio" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+            <option value="">{{ __('Seleccionar') }}</option>
+            <option value="1">{{ __('Sí') }}</option>
+            <option value="0">{{ __('No') }}</option>
+        </select>
+        <x-input-error :messages="$errors->get('envio_domicilio')" class="mt-2" />
+    </div>
+    <div class="mt-2">
+        <x-input-label for="precio_domicilio" :value="__('Precio del envío')" />
+        <x-text-input wire:model="precio_domicilio" id="precio_domicilio" class="block mt-1 w-full" type="number" step="0.01" name="precio_domicilio" required />
+        <x-input-error :messages="$errors->get('precprecio_domicilioio')" class="mt-2" />
+    </div>
 
     <div class="mt-2">
         <x-input-label for="imagen" :value="__('Imagen del Producto')" />

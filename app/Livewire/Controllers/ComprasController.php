@@ -12,6 +12,10 @@ class ComprasController extends Component
 
     public $venta;
 
+    //'cantidad', 'entrega', 'direccion', 'metodo', 'comprobante', 'valor'];
+
+
+
     public function mount()
     {
         $this->user = Auth::user();

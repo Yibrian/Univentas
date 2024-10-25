@@ -19,6 +19,8 @@ class Vendedor extends Model
         'nombre_tienda',
         'descripcion',
         'foto_tienda',
+        'numero_nequi',
+        'lugar_tienda'
     ];
 
     public function user()

@@ -17,6 +17,8 @@ new #[Layout('layouts.app')] class extends Component {
     public $descripcion;
     public $foto_tienda;
     public $foto_tienda_temp;
+    public $numero_nequi;
+    public $lugar_tienda;
 
     public function mount()
     {
@@ -25,6 +27,9 @@ new #[Layout('layouts.app')] class extends Component {
             $this->nombre_tienda = $this->vendedor->nombre_tienda;
             $this->descripcion = $this->vendedor->descripcion;
             $this->foto_tienda = $this->vendedor->foto_tienda;
+            $this->numero_nequi = $this->vendedor->numero_nequi;
+            $this->lugar_tienda = $this->vendedor->lugar_tienda;
+
         }
     }
 
@@ -41,6 +46,8 @@ new #[Layout('layouts.app')] class extends Component {
             'nombre_tienda' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'foto_tienda_temp' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'numero_nequi' => 'nullable|string|max:255',
+            'lugar_tienda' =>'required|string|max:255',
         ]);
 
         if ($this->foto_tienda_temp) {
@@ -57,6 +64,8 @@ new #[Layout('layouts.app')] class extends Component {
                 'nombre_tienda' => $this->nombre_tienda,
                 'descripcion' => $this->descripcion,
                 'foto_tienda' => $path,
+                'numero_nequi' => $this->numero_nequi,
+                'lugar_tienda' => $this->lugar_tienda
             ]);
             session()->flash('message', 'Vendedor actualizado exitosamente.');
             $this->dispatch('toast', ['title' => __('Vendedor actualizado exitosamente.'), 'type' => 'success', 'message' => '']);
@@ -67,6 +76,9 @@ new #[Layout('layouts.app')] class extends Component {
                 'nombre_tienda' => $this->nombre_tienda,
                 'descripcion' => $this->descripcion,
                 'foto_tienda' => $path,
+                'numero_nequi' => $this->numero_nequi,
+                'lugar_tienda' => $this->lugar_tienda
+
             ]);
             Auth::user()->assignRole('vendedor');
 
@@ -103,7 +115,6 @@ new #[Layout('layouts.app')] class extends Component {
 
 
             <form wire:submit.prevent="save" class="mt-6 space-y-6"  enctype="multipart/form-data">
-                <!-- Nombre de la Tienda -->
                 <div class="mt-4">
                     <x-input-label for="nombre_tienda" :value="__('Nombre de la Tienda')" />
                     <x-text-input wire:model="nombre_tienda" id="nombre_tienda" class="block mt-1 w-full" type="text"
@@ -111,7 +122,13 @@ new #[Layout('layouts.app')] class extends Component {
                     <x-input-error :messages="$errors->get('nombre_tienda')" class="mt-2" />
                 </div>
 
-                <!-- Descripción -->
+                <div class="mt-4">
+                    <x-input-label for="lugar_tienda" :value="__('Ubicación breve de la Tienda')" />
+                    <x-text-input wire:model="lugar_tienda" id="lugar_tienda" class="block mt-1 w-full" type="text"
+                        name="lugar_tienda" required autocomplete="lugar_tienda" />
+                    <x-input-error :messages="$errors->get('lugar_tienda')" class="mt-2" />
+                </div>
+
                 <div class="mt-4">
                     <x-input-label for="descripcion" :value="__('Descripción')" />
                     <textarea wire:model="descripcion" id="descripcion"
@@ -119,8 +136,13 @@ new #[Layout('layouts.app')] class extends Component {
                         name="descripcion" rows="4"></textarea>
                     <x-input-error :messages="$errors->get('descripcion')" class="mt-2" />
                 </div>
+                <div class="mt-4">
+                    <x-input-label for="numero_nequi" :value="__('Escribe sin espacios el número asociado a la cuenta de Nequi (si solo vas a recibir efectivo dejar el campo vacío)')" />
+                    <x-text-input wire:model="numero_nequi" id="numero_nequi" class="block mt-1 w-full" type="text"
+                        name="numero_nequi" autocomplete="numero_nequi" />
+                    <x-input-error :messages="$errors->get('numero_nequi')" class="mt-2" />
+                </div>
 
-                <!-- Foto de la Tienda -->
                 <div class="mt-4">
                     <x-input-label for="foto_tienda_temp" :value="__('Foto de la Tienda')" />
                     <input wire:model="foto_tienda_temp" id="foto_tienda_temp"
@@ -128,7 +150,6 @@ new #[Layout('layouts.app')] class extends Component {
                         type="file" accept="image/*" />
                     <x-input-error :messages="$errors->get('foto_tienda_temp')" class="mt-2" />
 
-                    <!-- Previsualización de la imagen -->
                     @if ($foto_tienda_temp)
                         <img src="{{ $foto_tienda_temp->temporaryUrl() }}" class="mt-2 w-32 h-32 object-cover"
                             alt="Previsualización de la imagen">
@@ -141,7 +162,6 @@ new #[Layout('layouts.app')] class extends Component {
                     @endif
                 </div>
 
-                <!-- Botón Guardar -->
                 <div class="flex items-center gap-4">
                     <button type="submit"
                         class="inline-flex justify-center items-center px-4 py-2 bg-red-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
