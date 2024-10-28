@@ -39,10 +39,10 @@ class VerProductoController extends Component{
         $vendedor = $this->producto->vendedor;
         $cliente = $this->user->cliente;
 
-        // if($vendedor->user->cliente == $cliente){
-        //     $this->dispatch('toast', ['title' => __('No puedes comprar un producto de tú misma tienda.'), 'type' => 'info', 'message' => '']);
-        //     return;
-        // }
+        if($vendedor->user->cliente == $cliente){
+            $this->dispatch('toast', ['title' => __('No puedes comprar un producto de tú misma tienda.'), 'type' => 'info', 'message' => '']);
+            return;
+        }
 
         if(!$this->entrega_domicilio){
             $this->lugar_entrega = $vendedor->lugar_tienda;
@@ -89,7 +89,6 @@ class VerProductoController extends Component{
         $validated['comprobante'] = $this->comprobante;
         $validated['valor'] = $this->valor;
 
-        // dd(vars: $validated);
         $venta = Venta::create($validated);
     
        

@@ -8,9 +8,32 @@
 <div class="py-6">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
         <div class="bg-white p-6 shadow sm:rounded-lg">
+
+            <div class="flex justify-between items-center mt-4 mb-4">
+                <div class="text-lg font-bold text-gray-800">
+                    Total vendido: ${{ number_format($total_vendido, 0) }}
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <select wire:model.defer="filtro" class="border-gray-300 rounded-lg">
+                        <option value="" selected>Todas las Ventas</option>
+                        <option value="confirmadas">Confirmadas (Producto entregado y recibido)</option>
+                        <option value="pendientes">Pendientes de Aprobación del Vendedor</option>
+                        <option value="espera">Esperando Confirmación del Cliente</option>
+                    </select>
+
+                    <x-primary-button wire:click="aplicarFiltro">
+                        <i class="fa-solid fa-filter mr-2"></i>
+                        <span>Filtrar</span>
+                    </x-primary-button>
+                </div>
+            </div>
+
             @if ($ventas->isEmpty())
-                <p class="text-gray-500">No has realizado ninguna ventas todavía.</p>
+                <p class="text-gray-500">No hay ventas disponibles.</p>
             @else
+                
+
                 <div class="space-y-4">
                     @foreach ($ventas as $venta)
                         <div
@@ -25,14 +48,24 @@
                                 <p class="text-gray-800 font-semibold mt-2">Precio:
                                     ${{ number_format($venta->producto->precio, 0) }}</p>
                                 <p class="text-gray-500">Cantidad comprada: {{ $venta->cantidad }}</p>
-                                <p class="text-gray-400 text-sm">Fecha de ventas:
+                                <p class="text-gray-500">Método de pago: {{ ucfirst($venta->metodo) }}</p>
+                                <p class="text-gray-500">
+                                    {{ $venta->entrega_domicilio ? 'Entrega a domicilio' : 'Recogida en tienda' }}:
+                                    {{ $venta->lugar_entrega }}
+                                </p>
+                                <p class="text-gray-400 text-sm">Fecha:
                                     {{ $venta->created_at->format('d/m/Y') }}</p>
                                 <p class="text-gray-500 text-sm mt-2">Comprado por:
                                     {{ $venta->cliente->user->name }}</p>
                             </div>
                             <div class="text-right space-y-2">
                                 <p class="text-lg font-bold text-gray-800">Total:
-                                    ${{ number_format($venta->producto->precio * $venta->cantidad, 0) }}</p>
+                                    ${{ number_format($venta->valor, 0) }}</p>
+
+                                @if ($venta->metodo === 'nequi' && $venta->comprobante)
+                                    <a href="{{ asset('storage/' . $venta->comprobante) }}" target="_blank"
+                                        class="text-sm font-semibold text-blue-600 hover:underline">Ver comprobante</a>
+                                @endif
 
                                 @if (!$venta->confirmacion_vendedor && !$venta->confirmacion_cliente)
                                     <div
@@ -69,6 +102,7 @@
                             </div>
                         </div>
                     @endforeach
+
 
                 </div>
             @endif
