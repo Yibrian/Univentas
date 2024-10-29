@@ -171,16 +171,21 @@
                     <label class="block text-sm font-medium text-gray-700">Método de pago</label>
                     <div class="flex space-x-4">
                         <label class="inline-flex items-center">
-                            <input type="radio" name="metodo_pago" value="efectivo" x-model="metodoPago" wire:model="metodo_pago"
+                            <input type="radio" name="metodo_pago" value="efectivo" x-model="metodoPago"
+                                wire:model="metodo_pago"
                                 class="form-radio h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500">
                             <span class="ml-2 text-sm font-medium text-gray-700">Efectivo</span>
 
                         </label>
-                        <label class="inline-flex items-center">
-                            <input type="radio" name="metodo_pago" value="nequi" x-model="metodoPago" wire:model="metodo_pago"
-                                class="form-radio h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                            <span class="ml-2 text-sm font-medium text-gray-700">Nequi</span>
-                        </label>
+                        @if ($producto->vendedor->numero_nequi)
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="metodo_pago" value="nequi" x-model="metodoPago"
+                                    wire:model="metodo_pago"
+                                    class="form-radio h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <span class="ml-2 text-sm font-medium text-gray-700">Nequi</span>
+                            </label>
+                        @endif
+
 
 
                     </div>
@@ -193,18 +198,29 @@
                                 class="font-semibold text-gray-700" x-text="formatearNumero(total)"></span></p>
                     </div>
 
-                    <!-- Pago con Nequi -->
-                    <div x-show="metodoPago === 'nequi'" class="space-y-4">
-                        <p class="text-sm text-gray-500">Total a transferir: <span class="font-semibold text-gray-700"
-                                x-text="formatearNumero(total)"></span></p>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Sube tu comprobante de Nequi</label>
-                            <input type="file" name="comprobante" wire:model="comprobante"
-                                class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                        </div>
-                        <x-input-error :messages="$errors->get('comprobante')" class="mt-2" />
+                    @if ($producto->vendedor->numero_nequi)
+                        <!-- Pago con Nequi -->
+                        <div x-show="metodoPago === 'nequi'" class="space-y-4">
+                            <label class="block text-sm font-medium text-gray-700">Número de NEQUI de la tienda:
+                                {{ $producto->vendedor->numero_nequi }}</label>
+                            @if ($producto->vendedor->qr_nequi)
+                                <a href="{{ asset('storage/' . $producto->vendedor->qr_nequi) }}" target="_blank"
+                                    class="text-blue-600 hover:underline">Ver QR</a>
+                            @endif
+                            <p class="text-sm text-gray-500">Total a transferir: <span
+                                    class="font-semibold text-gray-700" x-text="formatearNumero(total)"></span></p>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Sube tu comprobante de
+                                    Nequi</label>
+                                <input type="file" name="comprobante" wire:model="comprobante" accept="image/*"
+                                    class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            </div>
+                            <x-input-error :messages="$errors->get('comprobante')" class="mt-2" />
 
-                    </div>
+                        </div>
+                    @endif
+
+
                 </div>
 
 

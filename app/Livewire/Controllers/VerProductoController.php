@@ -38,11 +38,16 @@ class VerProductoController extends Component{
     {
         $vendedor = $this->producto->vendedor;
         $cliente = $this->user->cliente;
-
+        if($this->cantidad <= 0){
+            $this->dispatch('toast', ['title' => __('Cantidad no valida.'), 'type' => 'info', 'message' => '']);
+            return;
+        }
         if($vendedor->user->cliente == $cliente){
             $this->dispatch('toast', ['title' => __('No puedes comprar un producto de tú misma tienda.'), 'type' => 'info', 'message' => '']);
             return;
         }
+
+        
 
         if(!$this->entrega_domicilio){
             $this->lugar_entrega = $vendedor->lugar_tienda;

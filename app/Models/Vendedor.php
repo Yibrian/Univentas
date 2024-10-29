@@ -20,6 +20,7 @@ class Vendedor extends Model
         'descripcion',
         'foto_tienda',
         'numero_nequi',
+        'qr_nequi',
         'lugar_tienda'
     ];
 

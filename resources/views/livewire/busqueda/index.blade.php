@@ -11,17 +11,19 @@
             <h1 class="mb-2">Resultados de la Búsqueda</h1>
 
             @if ($vendedor)
-                <div class="flex items-center bg-gray-50 p-4 rounded-lg mb-4 shadow-md">
-                    <div class="flex-shrink-0">
-                        <img src="{{ asset('storage/' . $vendedor->foto_tienda) }}" 
-                            alt="{{ $vendedor->nombre_tienda }}" 
-                            class="w-16 h-16 object-cover rounded-lg" />
-                    </div>
-                    <div class="ml-4">
-                        <h4 class="text-lg font-bold text-gray-800">{{ $vendedor->nombre_tienda }}</h4>
-                        <p class="text-gray-600 mt-1">{{ $vendedor->descripcion }}</p>
-                    </div>
+            <div class="flex items-center bg-gray-50 p-4 rounded-lg mb-4 shadow-md">
+                <div class="flex-shrink-0">
+                    <img src="{{ asset('storage/' . $vendedor->foto_tienda) }}" 
+                        alt="{{ $vendedor->nombre_tienda }}" 
+                        class="w-16 h-16 object-cover rounded-lg" />
                 </div>
+                <div class="ml-4">
+                    <h4 class="text-lg font-bold text-gray-800">{{ $vendedor->nombre_tienda }}</h4>
+                    <p class="text-gray-600 mt-1">{{ $vendedor->descripcion }}</p>
+                    <p class="text-gray-600"><strong>Ubicación:</strong> {{ $vendedor->lugar_tienda }}</p>
+                </div>
+            </div>
+            
             @endif
 
             @if ($categoria)
