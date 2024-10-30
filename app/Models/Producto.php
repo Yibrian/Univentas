@@ -21,7 +21,9 @@ class Producto extends Model
         'categoria_id',
         'disponibilidad',
         'cantidad',
-        'imagen'
+        'imagen',
+        'envio_domicilio',
+        'precio_domicilio'
     ];
 
     public function vendedor()
@@ -34,4 +36,14 @@ class Producto extends Model
     {
         return $this->belongsTo(Categoria::class);
     }
+
+    public function ventas(){
+        return $this->hasMany(Venta::class);
+
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }

@@ -24,6 +24,13 @@ class ProductoController extends Component
     public $imagen;
     public $categoria_id;
 
+    public $envio_domicilio = false;
+    public $precio_domicilio = 0;
+
+    public $reviews;
+
+
+
 
     public function mount()
     {
@@ -38,6 +45,17 @@ class ProductoController extends Component
 
     }
 
+    public function viewReviews($id_producto){
+        $producto = Producto::findOrFail($id_producto);
+        $this->reviews = $producto->reviews;
+
+        
+    }
+
+    public function resetReviews(){
+        $this->reviews = null;
+    }
+
     public function store()
     {
         $validator = Validator::make($this->all(), [
@@ -47,7 +65,10 @@ class ProductoController extends Component
             'cantidad' => 'required|integer|min:0',
             'disponibilidad' => 'required|boolean',
             'categoria_id' => 'required|exists:categorias,id',
-            'imagen' => 'required|image|max:2048'
+            'imagen' => 'required|image|max:2048',
+            'envio_domicilio' => 'required|boolean',
+            'precio_domicilio' => 'required|numeric|min:0',
+
         ]);
 
         $validated = $validator->validated();
@@ -79,7 +100,9 @@ class ProductoController extends Component
             'cantidad' => 'required|integer|min:0',
             'disponibilidad' => 'required|boolean',
             'categoria_id' => 'required|exists:categorias,id',
-            'imagen' => 'nullable|image|max:2048'
+            'imagen' => 'nullable|image|max:2048',
+            'envio_domicilio' => 'required|boolean',
+            'precio_domicilio' => 'required|numeric|min:0',
         ]);
 
         $validated = $validator->validated();
@@ -128,6 +151,8 @@ class ProductoController extends Component
         $this->cantidad = $this->selectProducto->cantidad;
         $this->disponibilidad = $this->selectProducto->disponibilidad;
         $this->categoria_id = $this->selectProducto->categoria_id;
+        $this->envio_domicilio = $this->selectProducto->envio_domicilio;
+        $this->precio_domicilio = $this->selectProducto->precio_domicilio;
     }
 
     public function reload()

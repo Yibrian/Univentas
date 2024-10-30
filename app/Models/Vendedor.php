@@ -19,6 +19,9 @@ class Vendedor extends Model
         'nombre_tienda',
         'descripcion',
         'foto_tienda',
+        'numero_nequi',
+        'qr_nequi',
+        'lugar_tienda'
     ];
 
     public function user()
@@ -26,9 +29,21 @@ class Vendedor extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function productos(){
+    public function productos()
+    {
         return $this->hasMany(Producto::class);
 
+    }
+
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class);
+
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
 
