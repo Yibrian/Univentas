@@ -27,10 +27,23 @@ class VerProductoController extends Component{
     public $metodo_pago;
     public $comprobante;
     public $valor;
+    public $reviews;
+
+    public $calificacion;
+
     public function mount($id)
     {
         $this->producto = Producto::findOrFail($id);
         $this->user = Auth::user();
+
+        $this->reviews = $this->producto->reviews;
+        
+        if($this->reviews and $this->reviews->count() >0){
+            $this->calificacion = $this->reviews->sum('estrellas') / $this->reviews->count();
+        }else{
+            $this->calificacion = 0;
+        }
+
 
     }
 

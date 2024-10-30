@@ -27,6 +27,8 @@ class ProductoController extends Component
     public $envio_domicilio = false;
     public $precio_domicilio = 0;
 
+    public $reviews;
+
 
 
 
@@ -41,6 +43,17 @@ class ProductoController extends Component
         $this->productos = $user->vendedor->productos;
         $this->categorias = Categoria::all();
 
+    }
+
+    public function viewReviews($id_producto){
+        $producto = Producto::findOrFail($id_producto);
+        $this->reviews = $producto->reviews;
+
+        
+    }
+
+    public function resetReviews(){
+        $this->reviews = null;
     }
 
     public function store()

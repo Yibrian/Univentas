@@ -28,6 +28,10 @@ class Cliente extends Model
         return $this->hasMany(related: Venta::class);
 
     }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
 
 }

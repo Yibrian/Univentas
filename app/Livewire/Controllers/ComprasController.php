@@ -6,6 +6,7 @@ use Auth;
 use Livewire\Component;
 use App\Models\Venta;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Review;
 
 class ComprasController extends Component
 {
@@ -17,10 +18,7 @@ class ComprasController extends Component
 
     public $filtro;
 
-
-    //'cantidad', 'entrega', 'direccion', 'metodo', 'comprobante', 'valor'];
-
-
+    public $comentario, $estrellas;
 
     public function mount()
     {
@@ -30,6 +28,53 @@ class ComprasController extends Component
         }
         $this->compras = $this->user->cliente->compras;
         $this->total_comprado = $this->user->cliente->compras->where('confirmacion_vendedor', true)->where('confirmacion_cliente', true)->sum('valor');
+
+
+
+    }
+
+    public function saveReview()
+    {
+        $this->validate([
+            'estrellas' => 'required|integer|min:1|max:5',
+            'comentario' => 'nullable|string|max:500',
+        ]);
+
+        Review::create([
+            'cliente_id' => $this->user->cliente->id,
+            'vendedor_id' => $this->venta->vendedor->id,
+            'producto_id' => $this->venta->producto->id,
+            'venta_id' => $this->venta->id,
+            'comentario' => $this->comentario,
+            'estrellas' => $this->estrellas,
+        ]);
+
+        $this->dispatch('toast', ['title' => __('¡Se ha registrado tu calificación!'), 'type' => 'success', 'message' => '']);
+        $this->dispatch('reload');
+    }
+
+    public function compraReview($id_compra)
+    {
+        $this->venta = Venta::findOrFail($id_compra);
+
+        $review = Review::where('venta_id', $this->venta->id)
+            ->where('cliente_id', $this->user->cliente->id)
+            ->first();
+
+        if ($review) {
+            $this->comentario = $review->comentario;
+            $this->estrellas = $review->estrellas;
+        } else {
+            $this->comentario = '';
+            $this->estrellas = null;
+        }
+    }
+
+    public function verReview($reseñaExistente)
+    {
+        $review = Review::findOrFail($reseñaExistente);
+        $this->comentario = $review->comentario;
+        $this->estrellas = $review->estrellas;
 
     }
 
@@ -72,11 +117,11 @@ class ComprasController extends Component
         }
 
         $this->venta->producto->cantidad = $this->venta->producto->cantidad - $this->venta->cantidad;
-        if($this->venta->producto->cantidad < 0){
+        if ($this->venta->producto->cantidad < 0) {
             $this->dispatch('alert', ['title' => __('Ocurrio un error en la compra, supera la cantidad disponible del producto'), 'type' => 'error', 'message' => '']);
             return;
         }
-        if($this->venta->producto->cantidad == 0){
+        if ($this->venta->producto->cantidad == 0) {
             $this->venta->producto->disponibilidad = 0;
         }
         $this->venta->save();
@@ -104,6 +149,12 @@ class ComprasController extends Component
             return;
         }
 
+    }
+
+    public function resetReview()
+    {
+        $this->reset(['comentario', 'estrellas']);
+        $this->venta = null;
     }
     public function render()
     {

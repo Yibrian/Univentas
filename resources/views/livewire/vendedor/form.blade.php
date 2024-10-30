@@ -45,7 +45,7 @@ new #[Layout('layouts.app')] class extends Component {
             Storage::disk('public')->delete($this->vendedor->qr_nequi);
             $this->qr_nequi = null;
             $this->vendedor->qr_nequi = null;
-            $this->vendedor-> save();
+            $this->vendedor->save();
 
             $this->dispatch('toast', ['title' => __('Se ha eliminado el QR.'), 'type' => 'success', 'message' => '']);
         }
@@ -144,34 +144,39 @@ new #[Layout('layouts.app')] class extends Component {
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <form wire:submit.prevent="save" class="space-y-8" enctype="multipart/form-data">
-                
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
                     <!-- Nombre de la Tienda -->
                     <div>
                         <x-input-label for="nombre_tienda" :value="__('Nombre de la Tienda')" />
-                        <x-text-input wire:model="nombre_tienda" id="nombre_tienda" class="mt-1 w-full" type="text" required autocomplete="nombre_tienda" />
+                        <x-text-input wire:model="nombre_tienda" id="nombre_tienda" class="mt-1 w-full" type="text"
+                            required autocomplete="nombre_tienda" />
                         <x-input-error :messages="$errors->get('nombre_tienda')" class="mt-2" />
                     </div>
 
                     <!-- Ubicación breve de la Tienda -->
                     <div>
                         <x-input-label for="lugar_tienda" :value="__('Ubicación breve de la Tienda')" />
-                        <x-text-input wire:model="lugar_tienda" id="lugar_tienda" class="mt-1 w-full" type="text" required autocomplete="lugar_tienda" />
+                        <x-text-input wire:model="lugar_tienda" id="lugar_tienda" class="mt-1 w-full" type="text"
+                            required autocomplete="lugar_tienda" />
                         <x-input-error :messages="$errors->get('lugar_tienda')" class="mt-2" />
                     </div>
 
                     <!-- Descripción -->
                     <div class="col-span-1 sm:col-span-2">
                         <x-input-label for="descripcion" :value="__('Descripción')" />
-                        <textarea wire:model="descripcion" id="descripcion" class="mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4"></textarea>
+                        <textarea wire:model="descripcion" id="descripcion"
+                            class="mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            rows="4"></textarea>
                         <x-input-error :messages="$errors->get('descripcion')" class="mt-2" />
                     </div>
 
                     <!-- Número de Nequi -->
                     <div>
                         <x-input-label for="numero_nequi" :value="__('Número de cuenta Nequi (opcional)')" />
-                        <x-text-input wire:model="numero_nequi" id="numero_nequi" class="mt-1 w-full" type="text" autocomplete="numero_nequi" />
+                        <x-text-input wire:model="numero_nequi" id="numero_nequi" class="mt-1 w-full" type="text"
+                            autocomplete="numero_nequi" />
                         <x-input-error :messages="$errors->get('numero_nequi')" class="mt-2" />
                     </div>
 
@@ -179,26 +184,34 @@ new #[Layout('layouts.app')] class extends Component {
                     <div class="col-span-1 sm:col-span-2">
                         <x-input-label for="qr_nequi" :value="__('QR (opcional)')" />
                         <input type="file" id="qr_nequi" wire:model="qr_nequi" class="mt-1 w-full" accept="image/*">
-                        @if ($vendedor->qr_nequi)
+                        @if ($vendedor && $vendedor->qr_nequi)
                             <div class="flex items-center gap-2 mt-2">
-                                <button wire:click="eliminarQR" class="bg-red-500 text-white px-3 py-1 rounded-lg">Eliminar QR</button>
-                                <a href="{{ asset('storage/' . $vendedor->qr_nequi) }}" target="_blank" class="text-blue-600 hover:underline">Ver QR</a>
+                                <button wire:click="eliminarQR"
+                                    class="bg-red-500 text-white px-3 py-1 rounded-lg">Eliminar QR</button>
+                                <a href="{{ asset('storage/' . $vendedor->qr_nequi) }}" target="_blank"
+                                    class="text-blue-600 hover:underline">Ver QR</a>
                             </div>
                         @endif
+
                     </div>
 
                     <!-- Foto de la Tienda -->
                     <div class="col-span-1 sm:col-span-2">
                         <x-input-label for="foto_tienda_temp" :value="__('Foto de la Tienda')" />
-                        <input wire:model="foto_tienda_temp" id="foto_tienda_temp" class="mt-1 w-full text-sm text-gray-500 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="file" accept="image/*" />
+                        <input wire:model="foto_tienda_temp" id="foto_tienda_temp"
+                            class="mt-1 w-full text-sm text-gray-500 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            type="file" accept="image/*" />
                         <x-input-error :messages="$errors->get('foto_tienda_temp')" class="mt-2" />
                         <div class="mt-2">
                             @if ($foto_tienda_temp)
-                                <img src="{{ $foto_tienda_temp->temporaryUrl() }}" class="w-32 h-32 object-cover" alt="Previsualización de la imagen">
+                                <img src="{{ $foto_tienda_temp->temporaryUrl() }}" class="w-32 h-32 object-cover"
+                                    alt="Previsualización de la imagen">
                             @elseif($vendedor && $vendedor->foto_tienda)
-                                <img src="{{ asset('storage/' . $vendedor->foto_tienda) }}" class="w-32 h-32 object-cover" alt="Foto de la tienda">
+                                <img src="{{ asset('storage/' . $vendedor->foto_tienda) }}"
+                                    class="w-32 h-32 object-cover" alt="Foto de la tienda">
                             @else
-                                <img src="{{ asset('storage/tiendas/tienda_default.png') }}" class="w-32 h-32 object-cover" alt="Foto por defecto">
+                                <img src="{{ asset('storage/tiendas/tienda_default.png') }}"
+                                    class="w-32 h-32 object-cover" alt="Foto por defecto">
                             @endif
                         </div>
                     </div>
@@ -207,7 +220,8 @@ new #[Layout('layouts.app')] class extends Component {
 
                 <!-- Botones de Acción -->
                 <div class="flex justify-between items-center mt-4">
-                    <button type="submit" class="px-4 py-2 bg-red-700 text-white rounded-md hover:bg-red-600 focus:bg-red-600 active:bg-red-800">Guardar</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-red-700 text-white rounded-md hover:bg-red-600 focus:bg-red-600 active:bg-red-800">Guardar</button>
                     <x-action-message class="me-3" on="saved">Guardado.</x-action-message>
                 </div>
             </form>

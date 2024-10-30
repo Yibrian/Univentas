@@ -19,24 +19,11 @@
                     <p class="mt-4 text-2xl font-semibold text-gray-900">${{ number_format($producto->precio) }}</p>
                     <p class="mt-1 text-gray-700">Cantidad disponible: <span
                             class="font-semibold">{{ $producto->cantidad }}</span></p>
-
                     <div class="mt-4 flex items-center">
                         <span class="text-yellow-500 flex">
-                            @for ($i = 0; $i < 5; $i++)
-                                @if ($i < 3)
-                                    <svg class="h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path
-                                            d="M10 15l-5.878 3.09 1.122-6.563L1 6.545l6.568-.955L10 0l2.432 5.59L19 6.545l-4.244 4.982 1.122 6.563L10 15z" />
-                                    </svg>
-                                @else
-                                    <svg class="h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path
-                                            d="M10 15l-5.878 3.09 1.122-6.563L1 6.545l6.568-.955L10 0l2.432 5.59L19 6.545l-4.244 4.982 1.122 6.563L10 15z"
-                                            fill="none" stroke="currentColor" stroke-width="1.5" />
-                                    </svg>
-                                @endif
+                            @for ($i = 1; $i <= 5; $i++)
+                                <i
+                                    class="fa-solid fa-star {{ $i <= $calificacion ? 'text-yellow-400' : 'text-gray-300' }}"></i>
                             @endfor
                         </span>
                     </div>
@@ -50,9 +37,10 @@
             </div>
         </div>
 
+
+
         <div class="p-4 sm:p-8 bg-gray-50 shadow rounded-lg mt-6">
-            <div
-                class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-white shadow rounded-lg">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4">
                 <div class="flex-1">
                     <h4 class="text-2xl font-bold text-gray-800">Tienda:</h4>
                     <p class="text-xl font-semibold text-gray-600 mt-1">
@@ -62,27 +50,7 @@
                     <p class="mt-2 text-gray-500">Cantidad de productos en esta tienda:
                         {{ $producto->vendedor->productos->count() }}</p>
 
-                    <div class="mt-4 flex items-center">
-                        <!-- Estrellas de calificación -->
-                        <span class="text-yellow-500 flex">
-                            @for ($i = 0; $i < 5; $i++)
-                                @if ($i < 5)
-                                    <svg class="h-6 w-6 fill-current text-yellow-500" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path
-                                            d="M10 15l-5.878 3.09 1.122-6.563L1 6.545l6.568-.955L10 0l2.432 5.59L19 6.545l-4.244 4.982 1.122 6.563L10 15z" />
-                                    </svg>
-                                @else
-                                    <svg class="h-6 w-6 fill-current text-gray-300" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path
-                                            d="M10 15l-5.878 3.09 1.122-6.563L1 6.545l6.568-.955L10 0l2.432 5.59L19 6.545l-4.244 4.982 1.122 6.563L10 15z"
-                                            fill="none" stroke="currentColor" stroke-width="1.5" />
-                                    </svg>
-                                @endif
-                            @endfor
-                        </span>
-                    </div>
+
                 </div>
 
                 <!-- Imagen de la tienda -->
@@ -100,6 +68,41 @@
                 </a>
             </div>
 
+        </div>
+
+        <div class="p-4 sm:p-8 bg-gray-50 shadow rounded-lg mt-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-white">
+                <h2 class="text-xl font-bold text-gray-700">Reseñas</h2>
+            </div>
+
+            <div class="mt-4">
+                @if ($reviews && $reviews->isNotEmpty())
+                    @foreach ($reviews as $review)
+                        <div class="flex items-start mb-4 p-4 border-b border-gray-200">
+                            <img src="{{ asset('storage/' . $review->cliente->user->photo) }}"
+                                alt="Foto de {{ $review->cliente->user->name }}"
+                                class="w-10 h-10 rounded-full border border-gray-300 mr-4">
+
+                            <div class="flex-1">
+                                <div class="flex items-center">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i
+                                            class="fa-solid fa-star {{ $i <= $review->estrellas ? 'text-yellow-400' : 'text-gray-300' }}"></i>
+                                    @endfor
+                                </div>
+                                <!-- Comentario -->
+                                @if ($review->comentario)
+                                    <p class="text-gray-700 mt-1">{{ $review->comentario }}</p>
+                                @else
+                                    <p class="text-gray-500 mt-1 italic">{{ __('Sin comentario') }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-gray-500">{{ __('No hay reseñas disponibles.') }}</p>
+                @endif
+            </div>
         </div>
     </div>
 

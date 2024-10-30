@@ -29,15 +29,22 @@ class Vendedor extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function productos(){
+    public function productos()
+    {
         return $this->hasMany(Producto::class);
 
     }
 
-    public function ventas(){
+    public function ventas()
+    {
         return $this->hasMany(Venta::class);
 
     }
-    
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 
 }
