@@ -9,11 +9,11 @@
 
 @if (Auth::user()->vendedor)
     <x-nav-link :href="route('vender')" :active="request()->routeIs('vender')">
-        <i class="fa-solid fa-store mr-2 text-sm"></i> {{ __('Vender') }}
+        <i class="fa-solid fa-dollar-sign mr-2 text-sm"></i> {{ __('Vender') }}
     </x-nav-link>
 @else
     <x-nav-link :href="route('mi.tienda')" :active="request()->routeIs('mi.tienda')">
-        <i class="fa-solid fa-store mr-2 text-sm"></i> {{ __('¿Quieres vender?') }}
+        <i class="fa-solid fa-dollar-sign mr-2 text-sm"></i> {{ __('¿Quieres vender?') }}
     </x-nav-link>
 @endif
 
@@ -44,7 +44,9 @@
         </x-slot>
     </x-dropdown>
 </div>
-
+<x-nav-link :href="route('estadisticas')" :active="request()->routeIs('estadisticas')">
+    <i class="fa-solid fa-chart-pie mr-2 text-sm"></i> {{ __('Estadísticas') }}
+</x-nav-link>
 {{-- <div class="inline-flex items-center px-0 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
     <x-dropdown align="left" width="48">
         <x-slot name="trigger">

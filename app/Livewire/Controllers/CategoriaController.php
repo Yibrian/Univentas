@@ -37,7 +37,7 @@ class CategoriaController extends Component
     {
         $validator = Validator::make($this->all(), [
             'nombre' => ['required', 'string', 'max:255', 'unique:categorias,nombre'],
-            'photo' => 'required|image|max:3000', // Tamaño máximo de 3MB
+            'photo' => 'required|image|max:5000',
         ]);
 
         $validated = $validator->validated();
@@ -65,8 +65,8 @@ class CategoriaController extends Component
         $categoria = $this->selectCategoria;
 
         $validator = Validator::make($this->all(), [
-            'nombre' => ['required', 'string', 'max:255', 'unique:categorias,nombre'],
-            'photo' => 'nullable|image|max:3000',
+            'nombre' => ['required', 'string', 'max:255'],
+            'photo' => 'nullable|image|max:5000',
         ]);
 
         $validated = $validator->validated();

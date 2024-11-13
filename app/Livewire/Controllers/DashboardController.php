@@ -25,21 +25,26 @@ class DashboardController extends Component
     {
         $this->productos = Producto::where('disponibilidad', 1)->where('cantidad', '>', 0)->get();
         $this->user = Auth::user();
-
-        $this->producto_mas_vendido = Venta::select('producto_id', DB::raw('count(*) as total_ventas'))->groupBy('producto_id')->orderBy('total_ventas', 'desc')->first();
-        $this->producto_mas_vendido = Producto::findOrFail($this->producto_mas_vendido->producto_id);
-
-        $this->categoria_mas_vendida = Venta::select('productos.categoria_id', DB::raw('count(*) as total_ventas'))->join('productos', 'ventas.producto_id', '=', 'productos.id')->groupBy('productos.categoria_id')->orderBy('total_ventas', 'desc')->first();
-
-        $this->categoria_mas_vendida = Categoria::findOrFail($this->categoria_mas_vendida->categoria_id);
-
-        $this->producto_promocionado = Producto::findOrFail('18084d44-e726-40d8-b81f-d38fe0e33ab5');
-
-
-        // dd(vars: $this->categoria_mas_vendida);
-
-
+    
+        $ventaProducto = Venta::select('producto_id', DB::raw('count(*) as total_ventas'))
+            ->groupBy('producto_id')
+            ->orderBy('total_ventas', 'desc')
+            ->first();
+        
+        $this->producto_mas_vendido = $ventaProducto ? Producto::find($ventaProducto->producto_id) : null;
+    
+        $ventaCategoria = Venta::select('productos.categoria_id', DB::raw('count(*) as total_ventas'))
+            ->join('productos', 'ventas.producto_id', '=', 'productos.id')
+            ->groupBy('productos.categoria_id')
+            ->orderBy('total_ventas', 'desc')
+            ->first();
+    
+        $this->categoria_mas_vendida = $ventaCategoria ? Categoria::find($ventaCategoria->categoria_id) : null;
+    
+        $this->producto_promocionado = Producto::find('f8584a2f-cd39-4d6c-a5a3-b0534d723614');
+    
     }
+    
     public function render()
     {
         return view('dashboard')->layout('layouts.app');

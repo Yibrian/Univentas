@@ -45,7 +45,7 @@
         <x-input-error :messages="$errors->get('categoria_id')" class="mt-2" />
     </div>
     <div class="mt-2">
-        <x-input-label for="envio_domicilio" :value="__('¿Envío a domicilio?')" />
+        <x-input-label for="envio_domicilio" :value="__('¿Envío a domicilio? (Local, Buga Valle)')" />
         <select wire:model="envio_domicilio" id="envio_domicilio" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
             <option value="">{{ __('Seleccionar') }}</option>
             <option value="1">{{ __('Sí') }}</option>

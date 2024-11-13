@@ -8,36 +8,40 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <!-- Carrusel -->
-            <div x-data="carousel()" class="relative bg-white shadow sm:rounded-lg">
-                <div class="overflow-hidden">
-                    <template x-for="(slide, index) in slides" :key="index">
-                        <div x-show="currentSlide === index" class="transition-opacity duration-500">
-                            <img :src="slide.image" alt="" class="w-full h-64 object-contain">
-                            <div class="absolute bottom-0 left-0 right-0 bg-opacity-50 bg-gray-800 text-white p-4">
-                                <h3 class="text-lg font-semibold" x-text="slide.text"></h3>
-                                <button @click="goToUrl(slide.url)" class="mt-2 bg-red-600 text-white py-2 px-4 rounded"
-                                    x-text="slide.buttonText"></button>
+            <div wire:ignore>
+                <div x-data="carousel()" class="relative bg-white shadow sm:rounded-lg">
+                    <div class="overflow-hidden">
+                        <template x-for="(slide, index) in slides" :key="index">
+                            <div x-show="currentSlide === index" class="transition-opacity duration-500">
+                                <img :src="slide.image" alt="" class="w-full h-64 object-contain">
+                                <div class="absolute bottom-0 left-0 right-0 bg-opacity-50 bg-gray-800 text-white p-4">
+                                    <h3 class="text-lg font-semibold" x-text="slide.text"></h3>
+                                    <button @click="goToUrl(slide.url)"
+                                        class="mt-2 bg-red-600 text-white py-2 px-4 rounded"
+                                        x-text="slide.buttonText"></button>
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </div>
+                        </template>
+                    </div>
 
-                <button @click="prevSlide"
-                    class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-md">
-                    &lt;
-                </button>
-                <button @click="nextSlide"
-                    class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-md">
-                    &gt;
-                </button>
+                    <button @click="prevSlide"
+                        class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-md">
+                        &lt;
+                    </button>
+                    <button @click="nextSlide"
+                        class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-md">
+                        &gt;
+                    </button>
 
-                <div class="flex justify-center mt-4">
-                    <template x-for="(slide, index) in slides" :key="index">
-                        <button @click="currentSlide = index" class="h-2 w-2 mx-1 rounded-full"
-                            :class="{ 'bg-gray-800': currentSlide === index, 'bg-gray-400': currentSlide !== index }"></button>
-                    </template>
+                    <div class="flex justify-center mt-4">
+                        <template x-for="(slide, index) in slides" :key="index">
+                            <button @click="currentSlide = index" class="h-2 w-2 mx-1 rounded-full"
+                                :class="{ 'bg-gray-800': currentSlide === index, 'bg-gray-400': currentSlide !== index }"></button>
+                        </template>
+                    </div>
                 </div>
             </div>
+
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ __('¡Compra con nosotros!') }}</h3>
@@ -81,7 +85,7 @@
             @if (isset($producto_mas_vendido))
                 slides.push({
                     image: @json(asset('storage/' . $producto_mas_vendido->imagen)),
-                    text: 'Producto más vendido: ' + @json(ucfirst(strtolower($producto_mas_vendido->nombre))),
+                    text: 'Lo más vendido: ' + @json(ucfirst(strtolower($producto_mas_vendido->nombre))),
                     buttonText: 'Ver producto',
                     url: @json(route('producto', ['id' => $producto_mas_vendido->id]))
                 });
@@ -90,7 +94,7 @@
             @if (isset($categoria_mas_vendida))
                 slides.push({
                     image: @json(asset('storage/' . $categoria_mas_vendida->photo)),
-                    text: 'Categoría más vendida: ' + @json(ucfirst(strtolower($categoria_mas_vendida->nombre))),
+                    text: 'Lo más exitoso: ' + @json(ucfirst(strtolower($categoria_mas_vendida->nombre))),
                     buttonText: 'Ver categoría',
                     url: @json(route('busqueda', ['tipo' => 'categoria', 'clave' => $categoria_mas_vendida->nombre]))
                 });

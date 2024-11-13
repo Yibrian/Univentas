@@ -128,7 +128,7 @@
                             <input type="checkbox" id="entrega_domicilio" name="entrega_domicilio"
                                 x-model="entrega_domicilio" wire:model="entrega_domicilio"
                                 class="form-checkbox h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                            <span class="ml-3 text-sm font-medium text-gray-700">¿Quieres envío a domicilio?</span>
+                            <span class="ml-3 text-sm font-medium text-gray-700">¿Quieres envío a domicilio? (Local, Buga Valle)</span>
                             <x-input-error :messages="$errors->get('entrega_domicilio')" class="mt-2" />
 
                         </label>
