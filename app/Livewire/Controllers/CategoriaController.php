@@ -42,7 +42,6 @@ class CategoriaController extends Component
 
         $validated = $validator->validated();
 
-        $validated['nombre'] = strtoupper($validated['nombre']);
 
         if ($this->photo) {
             $validated['photo'] = $this->photo->store('categorias', 'public');
@@ -71,7 +70,6 @@ class CategoriaController extends Component
 
         $validated = $validator->validated();
 
-        $validated['nombre'] = strtoupper($validated['nombre']);
 
         if ($validated['photo']) {
             if ($categoria->photo && file_exists(public_path('storage/' . $categoria->photo))) {

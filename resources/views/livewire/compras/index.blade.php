@@ -5,6 +5,11 @@
     <x-breadcrumbs :breadcrumbs="[['title' => 'Inicio', 'url' => route('dashboard')], ['title' => 'Mis compras', 'url' => null]]" />
 </x-slot>
 
+@php
+    use App\Models\Review;
+
+@endphp
+
 <div class="py-6">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
         <div class="bg-white p-6 shadow sm:rounded-lg">
@@ -95,11 +100,20 @@
                                     <div
                                         class="mt-4 text-sm font-semibold text-green-800 bg-green-100 px-3 py-2 rounded-lg flex items-center justify-between mb-2">
                                         <span>Compra completada</span>
-                                        <button x-on:click.prevent="$dispatch('open-modal', 'review')"
-                                            wire:click.prevent="compraReview('{{ $compra->id }}')"
-                                            class="text-blue-600 hover:text-blue-800 ml-4">
+                                        @if ($review = Review::where('venta_id', $compra->id)->where('cliente_id', $user->cliente->id)->first())
+                                            <button x-on:click.prevent="$dispatch('open-modal', 'viewReview')"
+                                                wire:click.prevent="verReview('{{ $review->id }}')"
+                                                class="text-blue-600 hover:text-blue-800 ml-4">
+                                                Ver mi reseña
+                                            </button>
+                                        @else
+                                            <button x-on:click.prevent="$dispatch('open-modal', 'review')"
+                                                wire:click.prevent="compraReview('{{ $compra->id }}')"
+                                                class="text-blue-600 hover:text-blue-800 ml-4">
                                                 Reseña
-                                        </button>
+                                            </button>
+                                        @endif
+
                                     </div>
                                 @endif
 
@@ -122,42 +136,71 @@
                 <h2 class="text-lg font-medium text-gray-900 mb-6 text-center">
                     {{ __('Escribe una Reseña') }}
                 </h2>
+
                 <div class="mb-4">
-                    <label for="comentario" class="block text-sm font-medium text-gray-700">{{ __('Escribe un comentario a la publicación') }}</label>
+                    <label for="comentario"
+                        class="block text-sm font-medium text-gray-700">{{ __('Escribe un comentario a la publicación') }}</label>
                     <textarea id="comentario" wire:model="comentario" name="comentario" rows="4"
                         class="mt-1 block w-full shadow-sm border-gray-300 rounded-md"
-                        placeholder="{{ __('Escriba aquí su comentario...') }}" {{ $comentario ? 'readonly' : '' }}></textarea>
+                        placeholder="{{ __('Escriba aquí su comentario...') }}"></textarea>
+                    <x-input-error :messages="$errors->get('comentario')" class="mt-2" />
                 </div>
-    
+
                 <div x-data="{ rating: @entangle('estrellas') }" class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">{{ __('Calificar') }}</label>
                     <div class="flex space-x-1 mt-1">
                         <template x-for="star in 5" :key="star">
                             <button type="button" x-on:click="rating = star"
                                 :class="{ 'text-yellow-400': star <= rating, 'text-gray-300': star > rating }"
-                                class="text-2xl focus:outline-none" {{ $comentario ? 'disabled' : '' }}>
+                                class="text-2xl focus:outline-none">
                                 &#9733;
                             </button>
                         </template>
                     </div>
                     <x-input-error :messages="$errors->get('estrellas')" class="mt-2" />
-                    <input type="hidden" name="rating" :value="rating">
                 </div>
-    
+
                 <div class="mt-6 flex justify-end">
                     <x-danger-button x-on:click="$dispatch('close')" wire:click="resetReview" type="button">
-                        {{ __('Cancel') }}
+                        {{ __('Cancelar') }}
                     </x-danger-button>
-    
-                    @if (!$comentario and !$estrellas)
-                        <x-primary-button class="ms-3" type="submit">
-                            {{ __('ENVIAR RESEÑA') }}
-                        </x-primary-button>
-                    @endif
+                    <x-primary-button class="ml-3" type="submit">
+                        {{ __('ENVIAR RESEÑA') }}
+                    </x-primary-button>
                 </div>
             </div>
         </form>
     </x-modal>
+
+
+    <x-modal name="viewReview">
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">
+                {{ __('Reseña de Producto') }}
+            </h2>
     
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <label for="comentarioView"
+                    class="block text-sm font-medium text-gray-600 mb-1">{{ __('Comentario') }}</label>
+                <p id="comentarioView" class="text-gray-800 text-sm whitespace-pre-wrap">
+                    {{ $comentario }}
+                </p>
+            </div>
+    
+            <div class="flex justify-center items-center mb-4">
+                @for ($i = 1; $i <= 5; $i++)
+                    <i class="fa-solid fa-star text-2xl {{ $i <= $estrellas ? 'text-yellow-500' : 'text-gray-300' }}"></i>
+                @endfor
+            </div>
+    
+            <div class="mt-6 flex justify-end">
+                <x-primary-button x-on:click="$dispatch('close')" wire:click="resetReview" type="button" class="px-4 py-2">
+                    {{ __('Cerrar') }}
+                </x-primary-button>
+            </div>
+        </div>
+    </x-modal>
+    
+
 
 </div>

@@ -78,6 +78,11 @@ class ComprasController extends Component
 
     }
 
+    public function resetReviews(){
+        $this->comentario = null;
+        $this->estrellas = null;
+    }
+
     public function aplicarFiltro()
     {
         switch ($this->filtro) {

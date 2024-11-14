@@ -13,18 +13,19 @@
                     <div class="overflow-hidden">
                         <template x-for="(slide, index) in slides" :key="index">
                             <div x-show="currentSlide === index" class="transition-opacity duration-500">
-                                <img :src="slide.image" alt="" class="w-full h-64 object-contain">
+                                <!-- Ajuste en el tamaño de la imagen -->
+                                <img :src="slide.image" alt="" class="w-full h-64 object-cover"> <!-- Cambié 'object-contain' a 'object-cover' para que la imagen cubra todo el espacio disponible -->
                                 <div class="absolute bottom-0 left-0 right-0 bg-opacity-50 bg-gray-800 text-white p-4">
                                     <h3 class="text-lg font-semibold" x-text="slide.text"></h3>
                                     <button @click="goToUrl(slide.url)"
                                         class="mt-2 bg-red-600 text-white py-2 px-4 rounded"
                                         x-text="slide.buttonText"></button>
-                                        Hola
                                 </div>
                             </div>
                         </template>
                     </div>
-
+            
+                    <!-- Botones de navegación del carrousel -->
                     <button @click="prevSlide"
                         class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-md">
                         &lt;
@@ -33,7 +34,8 @@
                         class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-md">
                         &gt;
                     </button>
-
+            
+                    <!-- Indicadores de la imagen activa -->
                     <div class="flex justify-center mt-4">
                         <template x-for="(slide, index) in slides" :key="index">
                             <button @click="currentSlide = index" class="h-2 w-2 mx-1 rounded-full"
@@ -42,6 +44,7 @@
                     </div>
                 </div>
             </div>
+            
 
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

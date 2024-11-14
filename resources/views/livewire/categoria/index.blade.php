@@ -20,8 +20,7 @@
                     <thead>
                         <tr class="bg-gray-100 text-gray-600 text-sm leading-normal">
                             <th class="py-2 px-6 text-left">{{ __('Foto') }}</th>
-                            <th class="py-2 px-6 text-left">{{ __('Name') }}</th>
-                            <th class="py-2 px-6 text-center">{{ __('Actions') }}</th>
+                            <th class="py-2 px-6 text-left">{{ __('Nombre') }}</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
@@ -29,22 +28,24 @@
                             <tr class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-2 px-6 text-left">
                                     <img src="{{ asset('storage/' . $categoria->photo) }}"
-                                        alt="Foto de {{ $categoria->nombre }}" class="w-20 h-12 object-cover">
+                                        alt="Foto de {{ $categoria->nombre }}" class="w-full h-20 object-cover">
                                 </td>
-                                <td class="py-2 px-6 text-left">{{ $categoria->nombre }}</td>
-
-                                <td class="py-2 px-6 flex space-x-4 text-center justify-center">
+                                <td class="py-2 px-6 text-left flex items-center justify-between">
+                                    {{ $categoria->nombre }}
                                     <a wire:click.prevent="viewCategoria('{{ $categoria->id }}')"
-                                        x-on:click="$dispatch('open-modal', 'update-categoria')" class="cursor-pointer"
-                                        title="{{ __('Update') . ' ' . strtolower(__('Categoria')) }}">
+                                       x-on:click="$dispatch('open-modal', 'update-categoria')" 
+                                       class="cursor-pointer"
+                                       title="{{ __('Actualizar') . ' ' . strtolower(__('Categoria')) }}">
                                         <i class="fa-solid fa-pen-to-square text-xl" style="color: #B91C1C"></i>
                                     </a>
                                 </td>
+                                
+
                             </tr>
                         @endforeach
-
                     </tbody>
                 </table>
+
             </div>
             <x-modal name="create-categoria" focusable>
                 <div class="p-6">
