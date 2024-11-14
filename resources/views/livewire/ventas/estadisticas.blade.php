@@ -51,7 +51,7 @@
                         <div class="w-1/2 px-2 mt-4">
                             <div>
                                 <h2 class="text-center text-xl font-bold mb-4">Metodos de pago mas utilizados</h2>
-                                <x-dynamic-chart type="bar" :labels="$metodosPago->pluck('metodo')->toArray()" :data="$metodosPago->pluck('cantidad')->toArray()"
+                                <x-dynamic-chart type="pie" :labels="$metodosPago->pluck('metodo')->toArray()" :data="$metodosPago->pluck('cantidad')->toArray()"
                                     class="w-full h-64 mt-2" id="metodosPago" titulo="Distribución de Métodos de Pago" />
                             </div>
 
