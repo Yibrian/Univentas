@@ -19,6 +19,7 @@
                                     <button @click="goToUrl(slide.url)"
                                         class="mt-2 bg-red-600 text-white py-2 px-4 rounded"
                                         x-text="slide.buttonText"></button>
+                                        Hola
                                 </div>
                             </div>
                         </template>
