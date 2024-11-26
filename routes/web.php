@@ -5,6 +5,7 @@ use App\Livewire\Controllers\CategoriaController;
 use App\Livewire\Controllers\ComprasController;
 use App\Livewire\Controllers\DashboardController;
 use App\Livewire\Controllers\EstadisticasController;
+use App\Livewire\Controllers\NotificacionesController;
 use App\Livewire\Controllers\ProductoController;
 use App\Livewire\Controllers\VendedorController;
 use App\Livewire\Controllers\VentasController;
@@ -51,7 +52,6 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['auth', 'role:admin|cliente|vendedor']], function () {
 
     Route::get('/busqueda/{tipo}/{clave}', BusquedaController::class)->name('busqueda');
-
 
 
 });

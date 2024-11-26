@@ -12,6 +12,9 @@ use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Cupon;
+use App\Notifications\NuevaNotificacion;
+
+use App\Models\User;
 
 
 
@@ -138,7 +141,7 @@ class VerProductoController extends Component
             'metodo' => $this->metodo_pago,
             'comprobante' => $this->comprobante,
             'valor' => $this->valor,
-            'cupon_id' => $this->cupon->id,
+            'cupon_id' => $this->cupon->id ?? null,
         ];
 
         $validator = Validator::make($datos, [
@@ -151,7 +154,7 @@ class VerProductoController extends Component
             'metodo' => 'required|string',
             'comprobante' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048', Rule::requiredIf($this->metodo_pago === 'nequi')],
             'valor' => 'required|numeric|min:0',
-            'cupon_id' =>'required|exists:cupones,id',
+            'cupon_id' =>'nullable|exists:cupones,id',
         ]);
 
         if ($validator->fails()) {
@@ -165,6 +168,15 @@ class VerProductoController extends Component
 
         $validated = $validator->validated();
         $venta = Venta::create($validated);
+
+        $user = $vendedor->user;
+        $user->notify(new NuevaNotificacion([
+            'titulo' => 'Nueva Solicitud de Compra',
+            'mensaje' => 'Tienes una nueva venta pendiente por confirmar. Revisa los detalles de la solicitud.',
+            'url' => '/mis-ventas',
+        ]));
+        
+
 
         $this->dispatch('alert', ['title' => __('Tu solicitud de compra ha sido enviada.'), 'type' => 'success', 'message' => '']);
         $this->dispatch('reload');

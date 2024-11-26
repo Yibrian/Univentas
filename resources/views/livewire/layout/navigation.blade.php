@@ -56,6 +56,14 @@ new class extends Component {
                         placeholder="Buscar..." wire:model="palabra_busqueda"
                     />
                 </div>
+
+                <div class="m-2">
+                    <livewire:notificaciones/>
+
+                </div>
+
+
+                
                 
 
                 <x-dropdown align="right" width="48">

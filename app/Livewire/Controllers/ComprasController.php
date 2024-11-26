@@ -8,6 +8,7 @@ use App\Models\Venta;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Review;
 use App\Models\Cupon;
+use App\Notifications\NuevaNotificacion;
 
 class ComprasController extends Component
 {
@@ -79,7 +80,8 @@ class ComprasController extends Component
 
     }
 
-    public function resetReviews(){
+    public function resetReviews()
+    {
         $this->comentario = null;
         $this->estrellas = null;
     }
@@ -135,8 +137,29 @@ class ComprasController extends Component
         $this->venta->save();
         $this->venta->producto->save();
 
-        $cupon->usos = $cupon->usos - 1;
-        $cupon->save();
+        if($cupon){
+            $cupon->usos = $cupon->usos - 1;
+            $cupon->save();
+        }
+
+        
+
+        $user_vendedor = $this->venta->vendedor->user;
+        $user_cliente = $this->venta->cliente->user;
+
+        $user_vendedor->notify(new NuevaNotificacion([
+            'titulo' => 'Compra Completada',
+            'mensaje' => 'La compra ha sido completada exitosamente. Asegúrate de revisar el estado de la venta.',
+            'url' => 'mis-ventas',
+        ]));
+
+        $user_cliente->notify(new NuevaNotificacion([
+            'titulo' => 'Compra Completada',
+            'mensaje' => 'Tu compra ha sido completada. No olvides dejar una reseña sobre el producto.',
+            'url' => 'mis-compras',
+        ]));
+        
+
 
         $this->dispatch('alert', ['title' => __('Se ha confirmado la recepción'), 'type' => 'success', 'message' => '']);
         $this->compras = $this->user->cliente->compras;

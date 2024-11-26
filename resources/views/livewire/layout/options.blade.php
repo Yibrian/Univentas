@@ -7,7 +7,7 @@
         {{ __('Users') }}
     </x-dropdown-link>
     <x-dropdown-link :href="route('categorias')">
-        {{ __('Gestión de Categorias') }}
+        {{ __('Gestión de categorias') }}
     </x-dropdown-link>
 @endrole
 @role('cliente')

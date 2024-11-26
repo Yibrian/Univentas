@@ -6,6 +6,7 @@ use Livewire\Component;
 use Auth;
 use App\Models\Venta;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\NuevaNotificacion;
 
 class VentasController extends Component
 {
@@ -59,6 +60,12 @@ class VentasController extends Component
         }
 
         $this->venta->save();
+        $user = $this->venta->cliente->user;
+        $user->notify(new NuevaNotificacion([
+            'titulo' => 'Venta Confirmada',
+            'mensaje' => 'El vendedor ha confirmado tu compra. Por favor, recuerda confirmar la recepción del producto.',
+            'url' => '/mis-compras',
+        ]));
         $this->dispatch('alert', ['title' => __('Se ha confirmado la venta'), 'type' => 'success', 'message' => '']);
         $this->ventas = $this->user->vendedor->ventas;
         $this->total_vendido = $this->user->vendedor->ventas->where('confirmacion_vendedor', true)->where('confirmacion_cliente', true)->sum('valor');
