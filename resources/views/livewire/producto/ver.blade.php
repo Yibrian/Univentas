@@ -48,11 +48,24 @@
                     </p>
                     <p class="mt-2 text-gray-500">{{ $producto->vendedor->descripcion }}</p>
                     <p class="mt-2 text-gray-500">Cantidad de productos en esta tienda:
-                        {{ $producto->vendedor->productos->count() }}</p>
-
-
+                        {{ $producto->vendedor->productos->count() }}
+                    </p>
+                    <div class="mt-4 flex space-x-4">
+                        @if ($producto->vendedor->facebook)
+                            <a href="{{ $producto->vendedor->facebook }}" target="_blank" 
+                                class="text-blue-600 hover:text-blue-800">
+                                <i class="fa-brands fa-facebook fa-lg"></i>
+                            </a>
+                        @endif
+                        @if ($producto->vendedor->instagram)
+                            <a href="{{ $producto->vendedor->instagram }}" target="_blank" 
+                                class="text-pink-500 hover:text-pink-700">
+                                <i class="fa-brands fa-instagram fa-lg"></i>
+                            </a>
+                        @endif
+                    </div>
                 </div>
-
+        
                 <!-- Imagen de la tienda -->
                 <div class="flex-shrink-0 mt-4 md:mt-0 md:ml-6">
                     <img src="{{ asset('storage/' . $producto->vendedor->foto_tienda) }}"
@@ -60,15 +73,15 @@
                         class="w-32 h-32 object-cover rounded-lg shadow-md" />
                 </div>
             </div>
-
+        
             <div class="mt-4 text-center">
                 <a href="{{ route('busqueda', ['tipo' => 'tienda', 'clave' => $producto->vendedor->id]) }}"
                     class="inline-flex items-center px-6 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                     Ver tienda
                 </a>
             </div>
-
         </div>
+        
 
         <div class="p-4 sm:p-8 bg-gray-50 shadow rounded-lg mt-6">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-white">

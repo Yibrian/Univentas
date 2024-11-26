@@ -18,6 +18,8 @@ new #[Layout('layouts.app')] class extends Component {
     public $numero_nequi;
     public $qr_nequi;
     public $lugar_tienda;
+    public $facebook;
+    public $instagram;
 
     public function mount()
     {
@@ -28,7 +30,9 @@ new #[Layout('layouts.app')] class extends Component {
             $this->foto_tienda = $this->vendedor->foto_tienda;
             $this->numero_nequi = $this->vendedor->numero_nequi;
             $this->lugar_tienda = $this->vendedor->lugar_tienda;
-            $this->qr_nequi = $this->vendedor->qr_nequi;
+            $this->qr_nequi = null;
+            $this->facebook = $this->vendedor->facebook;
+            $this->instagram = $this->vendedor->instagram;
         }
     }
 
@@ -60,6 +64,8 @@ new #[Layout('layouts.app')] class extends Component {
             'numero_nequi' => 'nullable|string|max:255',
             'lugar_tienda' => 'required|string|max:255',
             'qr_nequi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'facebook' => 'nullable|url|max:255',
+            'instagram' => 'nullable|url|max:255',
         ]);
 
         // Manejo de 'foto_tienda'
@@ -74,13 +80,14 @@ new #[Layout('layouts.app')] class extends Component {
 
         // Manejo de 'qr_nequi'
         if ($this->qr_nequi) {
-            // Si ya existe un QR, eliminarlo
+            // Si se sube un nuevo archivo, eliminar el QR existente
             if ($this->vendedor && $this->vendedor->qr_nequi) {
                 Storage::disk('public')->delete($this->vendedor->qr_nequi);
             }
             $pathQrNequi = $this->qr_nequi->store('qr_tiendas', 'public');
         } else {
-            $pathQrNequi = null;
+            // Si no se sube archivo, mantener el QR existente o dejarlo como null
+            $pathQrNequi = $this->vendedor->qr_nequi ?? null;
         }
 
         // Guardar datos
@@ -92,6 +99,8 @@ new #[Layout('layouts.app')] class extends Component {
                 'numero_nequi' => $this->numero_nequi,
                 'lugar_tienda' => $this->lugar_tienda,
                 'qr_nequi' => $pathQrNequi,
+                'facebook' => $this->facebook,
+                'instagram' => $this->instagram,
             ]);
 
             session()->flash('message', 'Vendedor actualizado exitosamente.');
@@ -105,6 +114,8 @@ new #[Layout('layouts.app')] class extends Component {
                 'numero_nequi' => $this->numero_nequi,
                 'lugar_tienda' => $this->lugar_tienda,
                 'qr_nequi' => $pathQrNequi,
+                'facebook' => $this->facebook,
+                'instagram' => $this->instagram,
             ]);
 
             Auth::user()->assignRole('vendedor');
@@ -170,6 +181,20 @@ new #[Layout('layouts.app')] class extends Component {
                             class="mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                             rows="4"></textarea>
                         <x-input-error :messages="$errors->get('descripcion')" class="mt-2" />
+                    </div>
+                    <!-- Redes sociales -->
+                    <div>
+                        <x-input-label for="facebook" :value="__('Usuario de Facebook (opcional)')" />
+                        <x-text-input wire:model="facebook" id="facebook" class="mt-1 w-full" type="text"
+                            autocomplete="facebook" placeholder="https://facebook.com/usuario" />
+                        <x-input-error :messages="$errors->get('facebook')" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-input-label for="instagram" :value="__('Usuario de Instagram (opcional)')" />
+                        <x-text-input wire:model="instagram" id="instagram" class="mt-1 w-full" type="text"
+                            autocomplete="instagram" placeholder="https://instagram.com/usuario" />
+                        <x-input-error :messages="$errors->get('instagram')" class="mt-2" />
                     </div>
 
                     <!-- Número de Nequi -->

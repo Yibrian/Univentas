@@ -21,7 +21,9 @@ class Vendedor extends Model
         'foto_tienda',
         'numero_nequi',
         'qr_nequi',
-        'lugar_tienda'
+        'lugar_tienda',
+        'facebook',
+        'instagram',
     ];
 
     public function user()

@@ -21,10 +21,24 @@
                     <h4 class="text-lg font-bold text-gray-800">{{ $vendedor->nombre_tienda }}</h4>
                     <p class="text-gray-600 mt-1">{{ $vendedor->descripcion }}</p>
                     <p class="text-gray-600"><strong>Ubicación:</strong> {{ $vendedor->lugar_tienda }}</p>
+                    <div class="mt-2 flex space-x-4">
+                        @if ($vendedor->facebook)
+                            <a href="{{ $vendedor->facebook }}" target="_blank" 
+                                class="text-blue-600 hover:text-blue-800">
+                                <i class="fa-brands fa-facebook fa-lg"></i>
+                            </a>
+                        @endif
+                        @if ($vendedor->instagram)
+                            <a href="{{ $vendedor->instagram }}" target="_blank" 
+                                class="text-pink-500 hover:text-pink-700">
+                                <i class="fa-brands fa-instagram fa-lg"></i>
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
-            
-            @endif
+        @endif
+        
 
             @if ($categoria)
             <div class="flex items-center bg-gray-50 p-4 rounded-lg mb-4 shadow-md">
