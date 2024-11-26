@@ -11,7 +11,7 @@ class Venta extends Model
     use HasFactory;
     use UuidTrait;
     protected $fillable = ['producto_id', 'vendedor_id', 'cliente_id', 'confirmacion_vendedor', 'confirmacion_cliente',
-    'cantidad', 'entrega_domicilio', 'lugar_entrega', 'metodo', 'comprobante', 'valor'];
+    'cantidad', 'entrega_domicilio', 'lugar_entrega', 'metodo', 'comprobante', 'valor', 'cupon_id'];
 
     public function producto()
     {
@@ -26,5 +26,9 @@ class Venta extends Model
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function cupon(){
+        return $this->belongsTo( Cupon::class);
     }
 }

@@ -60,6 +60,16 @@
                                     {{ $compra->created_at->format('d/m/Y') }}</p>
                                 <p class="text-gray-500 text-sm mt-2">Vendido por:
                                     {{ $compra->producto->vendedor->nombre_tienda }}</p>
+
+                                @if ($compra->cupon)
+                                    <p class="text-gray-700 font-medium">Cupón usado:</p>
+                                    <p class="text-gray-600 text-sm">Código:
+                                        <strong>{{ $compra->cupon->codigo }}</strong>
+                                    </p>
+                                    <p class="text-gray-600 text-sm">Descuento:
+                                        {{ $compra->cupon->tipo === 'porcentaje' ? $compra->cupon->descuento . '%' : '$' . number_format($compra->cupon->descuento, 0) }}
+                                    </p>
+                                @endif
                             </div>
                             <div class="text-right space-y-2">
                                 <p class="text-lg font-bold text-gray-800">Total:
@@ -178,7 +188,7 @@
             <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">
                 {{ __('Reseña de Producto') }}
             </h2>
-    
+
             <div class="bg-gray-100 p-4 rounded-lg mb-4">
                 <label for="comentarioView"
                     class="block text-sm font-medium text-gray-600 mb-1">{{ __('Comentario') }}</label>
@@ -186,21 +196,23 @@
                     {{ $comentario }}
                 </p>
             </div>
-    
+
             <div class="flex justify-center items-center mb-4">
                 @for ($i = 1; $i <= 5; $i++)
-                    <i class="fa-solid fa-star text-2xl {{ $i <= $estrellas ? 'text-yellow-500' : 'text-gray-300' }}"></i>
+                    <i
+                        class="fa-solid fa-star text-2xl {{ $i <= $estrellas ? 'text-yellow-500' : 'text-gray-300' }}"></i>
                 @endfor
             </div>
-    
+
             <div class="mt-6 flex justify-end">
-                <x-primary-button x-on:click="$dispatch('close')" wire:click="resetReview" type="button" class="px-4 py-2">
+                <x-primary-button x-on:click="$dispatch('close')" wire:click="resetReview" type="button"
+                    class="px-4 py-2">
                     {{ __('Cerrar') }}
                 </x-primary-button>
             </div>
         </div>
     </x-modal>
-    
+
 
 
 </div>

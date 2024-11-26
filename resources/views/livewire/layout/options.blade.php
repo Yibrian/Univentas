@@ -23,6 +23,9 @@
     <x-dropdown-link :href="route('mi.tienda')">
         {{ __('Mi tienda') }}
     </x-dropdown-link>
+    <x-dropdown-link :href="route('cupones')">
+        {{ __('Cupones') }}
+    </x-dropdown-link>
 @endrole
 
 

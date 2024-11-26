@@ -14,6 +14,7 @@ use Livewire\Volt\Volt;
 use App\Livewire\Controllers\UsersController;
 use App\Http\Controllers\FileDownloadController;
 use App\Livewire\Controllers\VentaController;
+use App\Livewire\Controllers\CuponController;
 
 
 
@@ -59,6 +60,8 @@ Route::group(['middleware' => ['auth', 'role:admin|vendedor']], function () {
 
 
     Route::get('estadisticas', EstadisticasController::class)->name('estadisticas');
+
+    Route::get('cupones', CuponController::class)->name('cupones');
 
 });
 Route::group(['middleware' => ['auth', 'role:cliente']], function () {

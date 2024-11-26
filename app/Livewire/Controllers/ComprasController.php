@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Venta;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Review;
+use App\Models\Cupon;
 
 class ComprasController extends Component
 {
@@ -108,6 +109,8 @@ class ComprasController extends Component
     public function confirmarRecepción($id_venta)
     {
         $this->venta = Venta::findOrFail($id_venta);
+        $cupon = $this->venta->cupon;
+
 
         if (!$this->venta->confirmacion_vendedor) {
             $this->dispatch('toast', ['title' => __('Esta venta aún no ha sido confirmada por el vendedor'), 'type' => 'info', 'message' => '']);
@@ -131,6 +134,10 @@ class ComprasController extends Component
         }
         $this->venta->save();
         $this->venta->producto->save();
+
+        $cupon->usos = $cupon->usos - 1;
+        $cupon->save();
+
         $this->dispatch('alert', ['title' => __('Se ha confirmado la recepción'), 'type' => 'success', 'message' => '']);
         $this->compras = $this->user->cliente->compras;
         $this->total_comprado = $this->user->cliente->compras->where('confirmacion_vendedor', true)->where('confirmacion_cliente', true)->sum('valor');

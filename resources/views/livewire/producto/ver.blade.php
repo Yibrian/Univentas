@@ -128,7 +128,8 @@
                             <input type="checkbox" id="entrega_domicilio" name="entrega_domicilio"
                                 x-model="entrega_domicilio" wire:model="entrega_domicilio"
                                 class="form-checkbox h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                            <span class="ml-3 text-sm font-medium text-gray-700">¿Quieres envío a domicilio? (Local, Buga Valle)</span>
+                            <span class="ml-3 text-sm font-medium text-gray-700">¿Quieres envío a domicilio? (Local,
+                                Buga Valle)</span>
                             <x-input-error :messages="$errors->get('entrega_domicilio')" class="mt-2" />
 
                         </label>
@@ -156,6 +157,8 @@
                     </div>
                 </div>
 
+
+
                 <!-- Método de pago -->
                 <div x-data="{
                     metodoPago: '',
@@ -164,13 +167,42 @@
                     entregaDomicilio: @entangle('entrega_domicilio'),
                     Cantidad: @entangle('cantidad'),
                     formatearNumero(valor) {
-                        return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'COP' }).format(valor);
+                        const valorFinal = valor < 0 ? 0 : valor;
+                        return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'COP' }).format(valorFinal);
                     },
+                
                     actualizarTotal() {
                         this.total = (this.entregaDomicilio ? {{ $producto->precio }} + this.valorEnvio : {{ $producto->precio }}) * this.Cantidad;
+                
                     }
                 }" x-init="actualizarTotal();
-                $watch('entregaDomicilio', value => actualizarTotal()), $watch('cantidad', value => actualizarTotal())" class="space-y-4">
+                $watch('entregaDomicilio', value => actualizarTotal()), $watch('cantidad', value => actualizarTotal()), $watch('codigo_cupon', value => actualizarTotal())" class="space-y-4">
+                    <div class="space-y-4">
+                        <x-input-label for="codigo_cupon" :value="__('Código de cupón')" />
+                        <div class="flex space-x-4">
+                            <x-text-input wire:model="codigo_cupon" id="codigo_cupon" class="block mt-1 w-full"
+                                type="text" name="codigo_cupon" placeholder="Ingresa tu cupón aquí" />
+                            <x-primary-button type="button" wire:click="aplicarCupon">
+                                Aplicar
+                            </x-primary-button>
+                        </div>
+                        <x-input-error :messages="$errors->get('codigo_cupon')" class="mt-2" />
+                        @if ($cupon)
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4"
+                                role="alert">
+                                <span class="block sm:inline">
+                                    @if ($cupon->tipo === 'porcentaje')
+                                        Se aplicará un descuento de {{ $cupon->descuento }}% al total.
+                                    @elseif ($cupon->tipo === 'monto')
+                                        Se aplicará un descuento de
+                                        ${{ number_format($cupon->descuento, 2, ',', '.') }} al
+                                        total.
+                                    @endif
+                                </span>
+                            </div>
+                        @endif
+
+                    </div>
                     <label class="block text-sm font-medium text-gray-700">Método de pago</label>
                     <div class="flex space-x-4">
                         <label class="inline-flex items-center">
@@ -197,8 +229,30 @@
 
                     <!-- Pago en efectivo -->
                     <div x-show="metodoPago === 'efectivo'" class="mt-4">
-                        <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
-                                class="font-semibold text-gray-700" x-text="formatearNumero(total)"></span></p>
+                        @switch($tipo)
+                            @case('monto')
+                                <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
+                                        class="font-semibold text-gray-700"
+                                        x-text="formatearNumero(total - {{ $descuento ?? 0 }})"></span></p>
+                            @break
+
+                            @case('porcentaje')
+                                <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
+                                        class="font-semibold text-gray-700"
+                                        x-text="formatearNumero(total - (total * ({{ $descuento ?? 0 }} / 100)))"></span></p>
+                            @break
+
+                            <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
+                                    class="font-semibold text-gray-700" x-text="formatearNumero(total)"></span></p>
+
+                            @default
+                        @endswitch
+                        @if (!$tipo)
+                            <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
+                                    class="font-semibold text-gray-700" x-text="formatearNumero(total)"></span></p>
+                        @endif
+
+
                     </div>
 
                     @if ($producto->vendedor->numero_nequi)
@@ -210,8 +264,32 @@
                                 <a href="{{ asset('storage/' . $producto->vendedor->qr_nequi) }}" target="_blank"
                                     class="text-blue-600 hover:underline">Ver QR</a>
                             @endif
-                            <p class="text-sm text-gray-500">Total a transferir: <span
-                                    class="font-semibold text-gray-700" x-text="formatearNumero(total)"></span></p>
+                            @switch($tipo)
+                                @case('monto')
+                                    <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
+                                            class="font-semibold text-gray-700"
+                                            x-text="formatearNumero(total - {{ $descuento ?? 0 }})"></span></p>
+                                @break
+
+                                @case('porcentaje')
+                                    <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
+                                            class="font-semibold text-gray-700"
+                                            x-text="formatearNumero(total - (total * ({{ $descuento ?? 0 }} / 100)))"></span>
+                                    </p>
+                                @break
+
+                                <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
+                                        class="font-semibold text-gray-700" x-text="formatearNumero(total)"></span></p>
+
+                                @default
+                            @endswitch
+                            @if (!$tipo)
+                                <p class="text-sm text-gray-500">Total a pagar en efectivo: <span
+                                        class="font-semibold text-gray-700" x-text="formatearNumero(total)"></span>
+                                </p>
+                            @endif
+
+
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Sube tu comprobante de
                                     Nequi</label>

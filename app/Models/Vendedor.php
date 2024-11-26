@@ -41,6 +41,12 @@ class Vendedor extends Model
 
     }
 
+    public function cupones()
+    {
+        return $this->hasMany(Cupon::class);
+
+    }
+
     public function reviews()
     {
         return $this->hasMany(Review::class);
