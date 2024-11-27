@@ -154,19 +154,19 @@ class VerProductoController extends Component
             'metodo' => 'required|string',
             'comprobante' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048', Rule::requiredIf($this->metodo_pago === 'nequi')],
             'valor' => 'required|numeric|min:0',
-            'cupon_id' =>'nullable|exists:cupones,id',
+            'cupon_id' => 'nullable|exists:cupones,id',
         ]);
-
-        if ($validator->fails()) {
-            $this->dispatch('toast', ['title' => __('Error al validar la venta.'), 'type' => 'error', 'message' => '']);
-            return;
-        }
+        $validated = $validator->validated();
 
         if ($this->comprobante) {
-            $this->comprobante = $this->comprobante->store('comprobantes', 'public');
+            $validated['comprobante'] = $this->comprobante->store('comprobantes', 'public');
+
         }
 
-        $validated = $validator->validated();
+
+
+
+
         $venta = Venta::create($validated);
 
         $user = $vendedor->user;
@@ -175,7 +175,7 @@ class VerProductoController extends Component
             'mensaje' => 'Tienes una nueva venta pendiente por confirmar. Revisa los detalles de la solicitud.',
             'url' => '/mis-ventas',
         ]));
-        
+
 
 
         $this->dispatch('alert', ['title' => __('Tu solicitud de compra ha sido enviada.'), 'type' => 'success', 'message' => '']);

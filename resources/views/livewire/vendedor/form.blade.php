@@ -45,13 +45,23 @@ new #[Layout('layouts.app')] class extends Component {
 
     public function eliminarQR()
     {
-        if ($this->qr_nequi) {
+        if ($this->vendedor->qr_nequi) {
             Storage::disk('public')->delete($this->vendedor->qr_nequi);
             $this->qr_nequi = null;
             $this->vendedor->qr_nequi = null;
             $this->vendedor->save();
 
             $this->dispatch('toast', ['title' => __('Se ha eliminado el QR.'), 'type' => 'success', 'message' => '']);
+        }
+    }
+    public function eliminarFotoTienda(){
+        if ($this->vendedor->foto_tienda) {
+            Storage::disk('public')->delete($this->vendedor->foto_tienda);
+            $this->vendedor->foto_tienda = 'tiendas/tienda_default.png';
+            $this->vendedor->save();
+
+            $this->dispatch('toast', ['title' => __('Se ha eliminado la foto.'), 'type' => 'success', 'message' => '']);
+            $this->foto_tienda = $this->vendedor->foto_tienda;
         }
     }
 
@@ -239,6 +249,12 @@ new #[Layout('layouts.app')] class extends Component {
                                     class="w-32 h-32 object-cover" alt="Foto por defecto">
                             @endif
                         </div>
+                        @if ($vendedor && $vendedor->foto_tienda)
+                            <div class="flex items-center gap-2 mt-2">
+                                <button wire:click="eliminarFotoTienda"
+                                    class="bg-red-500 text-white px-3 py-1 rounded-lg">Eliminar Foto</button>
+                            </div>
+                        @endif
                     </div>
 
                 </div>
