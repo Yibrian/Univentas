@@ -193,8 +193,8 @@
                     <div class="space-y-4">
                         <x-input-label for="codigo_cupon" :value="__('Código de cupón')" />
                         <div class="flex space-x-4">
-                            <x-text-input wire:model="codigo_cupon" id="codigo_cupon" class="block mt-1 w-full"
-                                type="text" name="codigo_cupon" placeholder="Ingresa tu cupón aquí" />
+                            <x-text-input wire:model="codigo_cupon" id="codigo_cupon" class="block w-full uppercase"
+                                type="text" name="codigo_cupon" />
                             <x-primary-button type="button" wire:click="aplicarCupon">
                                 Aplicar
                             </x-primary-button>
