@@ -7,15 +7,14 @@ new class extends Component {
     /**
      * Log the current user out of the application.
      */
-     public $palabra_busqueda;
+    public $palabra_busqueda;
 
-     public function mount(){
-        
-        if(request()->route('tipo') === 'query'){
+    public function mount()
+    {
+        if (request()->route('tipo') === 'query') {
             $this->palabra_busqueda = request()->route('clave');
         }
-
-     }
+    }
 
     public function logout(Logout $logout): void
     {
@@ -46,25 +45,23 @@ new class extends Component {
 
             <!-- Settings Dropdown and Search Bar -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <div x-data="{ palabraClave:  @entangle('palabra_busqueda') }" class="mr-4">
-                    <input type="text"
-                        x-model="palabraClave"
+                <div x-data="{ palabraClave: @entangle('palabra_busqueda') }" class="mr-4">
+                    <input type="text" x-model="palabraClave"
                         @keydown.enter="if(palabraClave) { 
                             window.location.href = '{{ url('/busqueda/query') }}/' + palabraClave; 
                         }"
                         class="rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 w-72 sm:max-w-xs"
-                        placeholder="Buscar..." wire:model="palabra_busqueda"
-                    />
+                        placeholder="Buscar..." wire:model="palabra_busqueda" />
                 </div>
 
                 <div class="m-2">
-                    <livewire:notificaciones/>
+                    <livewire:notificaciones />
 
                 </div>
 
 
-                
-                
+
+
 
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -111,47 +108,48 @@ new class extends Component {
         </div>
     </div>
 
-<!-- Responsive Navigation Menu -->
-<div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-    <div class="pt-2 pb-3 space-y-1">
-        @include('livewire.layout.links')
-    </div>
+    <!-- Responsive Navigation Menu -->
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+            @include('livewire.layout.links')
+        </div>
 
-    <!-- Responsive Settings Options -->
-    <div class="pt-4 pb-1 border-t border-gray-200">
-        <!-- Search Bar -->
-        <div x-data="{ palabraClave:  @entangle('palabra_busqueda') }" class="px-4 mb-4">
-            <input type="text"
-                x-model="palabraClave"
-                @keydown.enter="if(palabraClave) { 
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <!-- Search Bar -->
+            <div x-data="{ palabraClave: @entangle('palabra_busqueda') }" class="px-4 mb-4">
+                <input type="text" x-model="palabraClave"
+                    @keydown.enter="if(palabraClave) { 
                     window.location.href = '{{ url('/busqueda/query') }}/' + palabraClave; 
                 }"
-                class="rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 w-full"
-                placeholder="Buscar..."
-            />
-        </div>
-        
-        
-        
-        <!-- Profile Section -->
-        <div class="flex items-center px-4">
-            <img src="{{ asset('storage/' . auth()->user()->photo) }}" alt="User Image" class="rounded-full"
-                style="width: 32px; height: 32px; margin-right: 10px; object-fit: cover">
-            <div>
-                <div class="font-medium text-base text-gray-800" 
-                     x-data="{{ json_encode(['name' => auth()->user()->name]) }}" 
-                     x-text="name" 
-                     x-on:profile-updated.window="name = $event.detail.name">
+                    class="rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 w-full"
+                    placeholder="Buscar..." />
+            </div>
+
+            <div class="m-2">
+                <livewire:notificaciones />
+
+            </div>
+
+
+
+            <!-- Profile Section -->
+            <div class="flex items-center px-4">
+                <img src="{{ asset('storage/' . auth()->user()->photo) }}" alt="User Image" class="rounded-full"
+                    style="width: 32px; height: 32px; margin-right: 10px; object-fit: cover">
+                <div>
+                    <div class="font-medium text-base text-gray-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
+                        x-on:profile-updated.window="name = $event.detail.name">
+                    </div>
+                    <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
                 </div>
-                <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
+            </div>
+
+            <!-- User Options -->
+            <div class="mt-3 space-y-1">
+                @include('livewire.layout.options')
             </div>
         </div>
-
-        <!-- User Options -->
-        <div class="mt-3 space-y-1">
-            @include('livewire.layout.options')
-        </div>
     </div>
-</div>
 
 </nav>

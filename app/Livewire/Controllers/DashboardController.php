@@ -41,7 +41,7 @@ class DashboardController extends Component
     
         $this->categoria_mas_vendida = $ventaCategoria ? Categoria::find($ventaCategoria->categoria_id) : null;
     
-        $this->producto_promocionado = Producto::find('f8584a2f-cd39-4d6c-a5a3-b0534d723614');
+        $this->producto_promocionado = Producto::find('1c85964e-2956-4dee-af95-c6e92adf6f0d');
     
     }
     

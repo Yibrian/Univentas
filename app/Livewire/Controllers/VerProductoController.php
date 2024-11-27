@@ -66,10 +66,9 @@ class VerProductoController extends Component
 
         $validated = $validator->validated();
 
-        $this->cupon->codigo_cupon = strtoupper($this->cupon->codigo_cupon);
 
 
-        $this->cupon = Cupon::where('codigo', $this->codigo_cupon)
+        $this->cupon = Cupon::where('codigo', strtoupper($this->cupon->codigo_cupon))
             ->where('vendedor_id', $this->producto->vendedor->id)
             ->first();
 
